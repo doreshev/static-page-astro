@@ -1,0 +1,22 @@
+---
+import { Image } from "astro:assets";
+import { localizedPath } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
+
+interface Props {
+  lang: Locale;
+  group: string;
+  title: string;
+  shortDescription: string;
+  image: ImageMetadata;
+  imageAlt: string;
+}
+const { lang, group, title, shortDescription, image, imageAlt } = Astro.props;
+---
+
+<a class="card" href={localizedPath(lang, `products/${group}`)}>
+  <Image class="card__image" src={image} alt={imageAlt} width={400} height={300} />
+  <p class="card__title">{title}</p>
+  <p class="card__desc">{shortDescription}</p>
+  <span class="card__meta">{group}</span>
+</a>

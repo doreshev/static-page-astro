@@ -1,0 +1,46 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { locales, type Locale } from "../../i18n/ui";
+import { useTranslations } from "../../i18n/utils";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+---
+
+<Layout lang={lang} title={t("imprint.title")}>
+  <section class="section wrap" style="max-width:75ch;">
+    <p class="eyebrow">{t("footer.imprint")}</p>
+    <h1>{t("imprint.title")}</h1>
+
+    <p style="background:#fff;border:1px solid var(--line);padding:16px;font-family:var(--font-mono);font-size:0.85rem;color:var(--steel);">
+      PLACEHOLDER -- Ronesans Trading Lux is registered in Luxembourg, so this page
+      should follow Luxembourg's legal-notice requirements for commercial
+      websites (an EU-wide baseline, similar in spirit to Germany's
+      Impressum but with Luxembourg-specific register details). It
+      typically needs: the full legal name and legal form (e.g. S.à r.l.),
+      registered office address in Luxembourg, RCS Luxembourg register
+      number, business-permit ("autorisation d'établissement") number, VAT
+      number (LU-prefixed), and contact details -- a real email address
+      (not just a contact form) and a phone number if the company has one.
+      Replace this block with the real details, ideally checked by whoever
+      handles the company's legal/compliance side; if the site actively
+      targets customers in Germany or France as well, it's worth confirming
+      with them whether any additional destination-country disclosures
+      apply on top of the Luxembourg baseline.
+    </p>
+
+    <p style="background:#fff;border:1px solid var(--line);padding:16px;font-family:var(--font-mono);font-size:0.85rem;color:var(--steel);">
+      NOTE ON WHICH NAME GOES HERE -- this page must show the legal identity
+      of Ronesans Trading Lux, the EU representative operating this site
+      (registered address, register entry, VAT ID, etc.), not Galkynysh
+      Plastik's manufacturer details. It's fine, and often expected, to
+      also state the representative relationship here (e.g. "official EU
+      representative of Galkynysh Plastik") -- just make sure the
+      registration details themselves belong to your own legal entity.
+    </p>
+  </section>
+</Layout>

@@ -1,0 +1,56 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../../layouts/Layout.astro";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { locales, type Locale } from "../../../i18n/ui";
+import { useTranslations, localizedPath } from "../../../i18n/utils";
+
+export async function getStaticPaths() {
+  const allProducts = await getCollection("products");
+  return allProducts.map((product) => ({
+    params: { lang: product.data.lang, slug: product.data.group },
+    props: { product },
+  }));
+}
+
+const { lang } = Astro.params as { lang: Locale; slug: string };
+const { product } = Astro.props as { product: CollectionEntry<"products"> };
+const t = useTranslations(lang);
+const { Content } = await render(product);
+---
+
+<Layout lang={lang} title={product.data.title} description={product.data.shortDescription}>
+  <section class="section wrap">
+    <a class="back-link" href={localizedPath(lang, "products")}>← {t("product.back")}</a>
+    <div class="product-detail">
+      <Image
+        src={product.data.image}
+        alt={product.data.imageAlt}
+        width={700}
+        height={525}
+      />
+      <div>
+        <p class="eyebrow">{product.data.group}</p>
+        <h1>{product.data.title}</h1>
+        <p class="lead">{product.data.shortDescription}</p>
+        <Content />
+
+        <h3>{t("product.specs")}</h3>
+        <table class="spec-table">
+          <tbody>
+            {
+              product.data.specs.map((spec) => (
+                <tr>
+                  <td>{spec.label}</td>
+                  <td>{spec.value}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+
+        <a class="btn" href={localizedPath(lang, "contact")}>{t("product.requestQuote")}</a>
+      </div>
+    </div>
+  </section>
+</Layout>

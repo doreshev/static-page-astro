@@ -1,0 +1,31 @@
+---
+import { locales, localeNames, type Locale } from "../i18n/ui";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+
+// Swap only the first path segment (the locale) and keep the rest of the URL,
+// so switching language on a product page stays on that same product.
+// astro.config.mjs sets trailingSlash: "always", so every generated link
+// here must end in "/" too, or Astro's dev server throws a redirect
+// warning on every language switch.
+const pathParts = Astro.url.pathname.split("/").filter(Boolean);
+const restOfPath = pathParts.slice(1).join("/");
+const suffix = restOfPath ? `${restOfPath}/` : "";
+---
+
+<div class="lang-switch" role="group" aria-label="Language">
+  {
+    locales.map((code) => (
+      <a
+        href={`/${code}/${suffix}`}
+        aria-current={code === lang ? "true" : undefined}
+        lang={code}
+      >
+        {code.toUpperCase()}
+      </a>
+    ))
+  }
+</div>

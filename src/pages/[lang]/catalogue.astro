@@ -1,0 +1,39 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { locales, type Locale } from "../../i18n/ui";
+import { useTranslations } from "../../i18n/utils";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+// Only one catalogue file exists right now (English). Every language route
+// links to the same PDF. Once translated catalogues exist, this can go
+// back to a per-language path, e.g. `/catalogue/Catalogue-2026-${lang}.pdf`.
+const pdfPath = "/catalogue/Catalogue-2026-eng.pdf";
+---
+
+<Layout lang={lang} title={t("catalogue.title")} description={t("catalogue.lead")}>
+  <section class="section wrap">
+    <div class="section__head">
+      <p class="eyebrow">{t("nav.catalogue")}</p>
+      <h1>{t("catalogue.title")}</h1>
+      <p class="lead">{t("catalogue.lead")}</p>
+    </div>
+
+    {lang !== "en" && <p class="lead">{t("catalogue.englishOnly")}</p>}
+
+    <div class="download-card">
+      <div>
+        <p class="card__title" style="margin-bottom:4px;">
+          Ronesans Trading — Product Catalogue 2026
+        </p>
+        <span class="download-card__meta">PDF · EN</span>
+      </div>
+      <a class="btn" href={pdfPath} download>{t("catalogue.download")}</a>
+    </div>
+  </section>
+</Layout>

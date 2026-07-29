@@ -1,0 +1,92 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { locales, type Locale } from "../../i18n/ui";
+import { useTranslations, localizedPath } from "../../i18n/utils";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+---
+
+<Layout lang={lang} title={t("contact.title")} description={t("contact.lead")}>
+  <section class="section wrap">
+    <div class="section__head">
+      <p class="eyebrow">{t("nav.contact")}</p>
+      <h1>{t("contact.title")}</h1>
+      <p class="lead">{t("contact.lead")}</p>
+    </div>
+
+    <!--
+      Plain static HTML form, no JavaScript required. When deployed on
+      Netlify, `data-netlify="true"` + the hidden form-name field is enough
+      for Netlify to detect this form at build time and start collecting
+      submissions -- no backend code needed.
+
+      GETTING SUBMISSIONS EMAILED TO YOU -- this is the one step that can't
+      be done from code, since Netlify doesn't expose it via netlify.toml
+      or the HTML form; it's an account-level setting tied to the deployed
+      site. After connecting this repo to Netlify:
+        Project configuration > Notifications > Emails and webhooks
+        > Form submission notifications > Add notification
+        > Email notification > enter the address to receive them at.
+      Currently testing with bibududu@duck.com -- swap it for the real
+      company inbox there whenever that's ready; no code change needed.
+      (The `name="email"` field below also makes Netlify auto-set the
+      Reply-To header to whatever the visitor typed, so you can just hit
+      reply.)
+
+      If you deploy on Cloudflare Pages instead, swap the form `action` and
+      hidden fields for a service like Web3Forms or Formspree (see README).
+    -->
+    <form
+      class="form"
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action={localizedPath(lang, "contact-success")}
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="hidden" name="language" value={lang} />
+      <input type="hidden" name="subject" value="Ronesans Trading -- new contact form message" />
+      <p class="honeypot-field">
+        <label>
+          Don't fill this out if you're human: <input name="bot-field" />
+        </label>
+      </p>
+
+      <div class="form-field">
+        <label for="name">{t("contact.name")}</label>
+        <input id="name" name="name" type="text" required />
+      </div>
+
+      <div class="form-field">
+        <label for="email">{t("contact.email")}</label>
+        <input id="email" name="email" type="email" required />
+      </div>
+
+      <div class="form-field">
+        <label for="company">{t("contact.company")}</label>
+        <input id="company" name="company" type="text" />
+      </div>
+
+      <div class="form-field">
+        <label for="message">{t("contact.message")}</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+
+      <div class="form-consent">
+        <input id="consent" name="consent" type="checkbox" required />
+        <label for="consent">
+          {t("contact.consent")}{" "}
+          <a href={localizedPath(lang, "privacy")}>{t("contact.consentLinkText")}</a>.
+        </label>
+      </div>
+
+      <button class="btn" type="submit">{t("contact.submit")}</button>
+    </form>
+  </section>
+</Layout>

@@ -1,0 +1,16 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f7f5f0"/>
+  <g stroke="#10243e" stroke-width="2" fill="none">
+    <line x1="90" y1="150" x2="310" y2="150" stroke="#e3edec" stroke-width="46"/>
+    <!-- corrugation ridges -->
+    <path d="M100 127 v46 M120 127 v46 M140 127 v46 M160 127 v46 M180 127 v46 M200 127 v46 M220 127 v46 M240 127 v46 M260 127 v46 M280 127 v46 M300 127 v46"
+          stroke="#1f6f68" stroke-width="3"/>
+    <rect x="90" y="127" width="220" height="46" rx="4" fill="none" stroke="#10243e" stroke-width="2.5"/>
+  </g>
+  <g stroke="#c7d1d6" stroke-width="1">
+    <line x1="90" y1="200" x2="310" y2="200"/>
+    <line x1="90" y1="194" x2="90" y2="206"/>
+    <line x1="310" y1="194" x2="310" y2="206"/>
+  </g>
+  <text x="200" y="222" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="#5b6770">DN 200 · PERFORATED</text>
+</svg>

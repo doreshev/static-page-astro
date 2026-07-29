@@ -1,0 +1,19 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f7f5f0"/>
+  <!-- pipe cross-section (ring) -->
+  <g stroke="#10243e" stroke-width="2">
+    <circle cx="150" cy="150" r="85" fill="#ffffff"/>
+    <circle cx="150" cy="150" r="62" fill="#e3edec" stroke="#1f6f68" stroke-width="2.5"/>
+  </g>
+  <!-- length of pipe (side view) -->
+  <g stroke="#10243e" stroke-width="2" fill="#ffffff">
+    <rect x="255" y="118" width="110" height="64" rx="4"/>
+  </g>
+  <ellipse cx="255" cy="150" rx="7" ry="32" fill="#e3edec" stroke="#1f6f68" stroke-width="2"/>
+  <g stroke="#c7d1d6" stroke-width="1">
+    <line x1="88" y1="250" x2="212" y2="250"/>
+    <line x1="88" y1="244" x2="88" y2="256"/>
+    <line x1="212" y1="244" x2="212" y2="256"/>
+  </g>
+  <text x="150" y="270" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="#5b6770">OD 110 MM · SDR 17</text>
+</svg>

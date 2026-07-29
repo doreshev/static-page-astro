@@ -1,0 +1,128 @@
+---
+import { Image, getImage } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { locales, type Locale } from "../../i18n/ui";
+import { useTranslations } from "../../i18n/utils";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+// Certificates are currently supplied in English only. Rather than hard-
+// coding "en", we group by `group` id and prefer a same-language entry if
+// one exists, falling back to English otherwise. That means once someone
+// adds e.g. cert-1-de.md, the German page picks it up automatically --
+// no code change needed here.
+const allCertificates = await getCollection("certificates");
+const byGroup = new Map<string, (typeof allCertificates)[number]>();
+for (const cert of allCertificates) {
+  const existing = byGroup.get(cert.data.group);
+  if (!existing || cert.data.lang === lang) {
+    if (!existing || existing.data.lang !== lang) {
+      byGroup.set(cert.data.group, cert);
+    }
+  }
+}
+const certificates = [...byGroup.values()].sort((a, b) => a.data.order - b.data.order);
+
+// Precompute a larger optimized variant of each certificate photo for the
+// click-to-expand lightbox. Built once at build time, so opening the
+// lightbox on the live site is just an <img src> swap -- no extra
+// third-party JS library needed.
+const fullImages = await Promise.all(
+  certificates.map((cert) => getImage({ src: cert.data.image, width: 1400 }))
+);
+---
+
+<Layout lang={lang} title={t("certificates.title")} description={t("certificates.lead")}>
+  <section class="section wrap">
+    <div class="section__head">
+      <p class="eyebrow">{t("nav.certificates")}</p>
+      <h1>{t("certificates.title")}</h1>
+      <p class="lead">{t("certificates.lead")}</p>
+    </div>
+    <div class="grid">
+      {
+        certificates.map((cert, i) => {
+          const dialogId = `cert-dialog-${cert.data.group}`;
+          return (
+            <div class="card cert-card">
+              <button
+                type="button"
+                class="cert-trigger"
+                data-lightbox-target={dialogId}
+                aria-haspopup="dialog"
+                aria-label={`${t("certificates.viewLarger")}: ${cert.data.title}`}
+              >
+                <Image
+                  class="card__image"
+                  src={cert.data.image}
+                  alt={cert.data.imageAlt}
+                  width={400}
+                  height={300}
+                />
+              </button>
+              <p class="card__title">{cert.data.title}</p>
+              <p class="card__desc">{cert.data.description}</p>
+              <p class="card__desc">
+                {t("certificates.issuedBy")}: {cert.data.issuer}
+              </p>
+              {cert.data.validUntil && (
+                <p class="card__desc">
+                  {t("certificates.validUntil")}: {cert.data.validUntil}
+                </p>
+              )}
+              {cert.data.lang !== lang && (
+                <span class="card__meta">{cert.data.lang.toUpperCase()}</span>
+              )}
+
+              <dialog id={dialogId} class="lightbox">
+                <button
+                  type="button"
+                  class="lightbox__close"
+                  data-lightbox-close
+                  aria-label={t("certificates.close")}
+                >
+                  ×
+                </button>
+                <img
+                  class="lightbox__image"
+                  src={fullImages[i].src}
+                  width={fullImages[i].attributes.width}
+                  height={fullImages[i].attributes.height}
+                  alt={cert.data.imageAlt}
+                  loading="lazy"
+                />
+                <p class="lightbox__caption">{cert.data.title}</p>
+              </dialog>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <script>
+      // Vanilla JS, no library: wires each thumbnail button to its <dialog>.
+      // Native <dialog> gives us Escape-to-close and modal focus trapping
+      // for free; we only need to handle opening and backdrop-click-to-close.
+      document.querySelectorAll<HTMLButtonElement>("[data-lightbox-target]").forEach((trigger) => {
+        const dialog = document.getElementById(trigger.dataset.lightboxTarget!) as HTMLDialogElement | null;
+        if (!dialog) return;
+
+        trigger.addEventListener("click", () => dialog.showModal());
+
+        // Clicking the backdrop (the dialog element itself, outside its
+        // content box) closes it; clicking the image/caption does not.
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+
+        dialog.querySelector("[data-lightbox-close]")?.addEventListener("click", () => dialog.close());
+      });
+    </script>
+  </section>
+</Layout>

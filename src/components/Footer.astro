@@ -1,0 +1,21 @@
+---
+import { useTranslations, localizedPath } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>© {year} Ronesans Trading. {t("footer.rights")}</span>
+    <nav aria-label="Legal">
+      <a href={localizedPath(lang, "imprint")}>{t("footer.imprint")}</a>
+      <a href={localizedPath(lang, "privacy")}>{t("footer.privacy")}</a>
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,43 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ProductCard from "../../../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+import { locales, type Locale } from "../../../i18n/ui";
+import { useTranslations } from "../../../i18n/utils";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+const allProducts = await getCollection("products");
+const products = allProducts
+  .filter((p) => p.data.lang === lang)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout lang={lang} title={t("products.title")} description={t("products.lead")}>
+  <section class="section wrap">
+    <div class="section__head">
+      <p class="eyebrow">{t("nav.products")}</p>
+      <h1>{t("products.title")}</h1>
+      <p class="lead">{t("products.lead")}</p>
+    </div>
+    <div class="grid">
+      {
+        products.map((product) => (
+          <ProductCard
+            lang={lang}
+            group={product.data.group}
+            title={product.data.title}
+            shortDescription={product.data.shortDescription}
+            image={product.data.image}
+            imageAlt={product.data.imageAlt}
+          />
+        ))
+      }
+    </div>
+  </section>
+</Layout>

@@ -1,11 +1,16 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Plain static redirect to the default locale -- works the same on
+// Netlify, Cloudflare Pages, or any static file host, no server needed.
 ---
-
-<Layout>
-	<Welcome />
-</Layout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0; url=/en/" />
+    <link rel="canonical" href="/en/" />
+    <title>Ronesans Trading</title>
+  </head>
+  <body>
+    <p>Redirecting to <a href="/en/">the English homepage</a>…</p>
+  </body>
+</html>

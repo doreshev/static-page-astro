@@ -1,0 +1,60 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+import { locales, type Locale } from "../../i18n/ui";
+import { useTranslations, localizedPath } from "../../i18n/utils";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+const allProducts = await getCollection("products");
+const featured = allProducts
+  .filter((p) => p.data.lang === lang && p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout lang={lang} title={t("home.title")} description={t("home.lead")}>
+  <section class="hero wrap">
+    <p class="eyebrow">{t("home.eyebrow")}</p>
+    <h1 class="hero__title">{t("home.title")}</h1>
+    <p class="lead hero__lead">{t("home.lead")}</p>
+    <a class="btn" href={localizedPath(lang, "products")}>{t("home.cta")}</a>
+  </section>
+
+  <section class="section section--bordered wrap">
+    <div class="section__head">
+      <h2>{t("home.about.title")}</h2>
+      {t("home.about.body").split("\n\n").map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section__head">
+      <h2>{t("home.products.title")}</h2>
+    </div>
+    <div class="grid">
+      {
+        featured.map((product) => (
+          <ProductCard
+            lang={lang}
+            group={product.data.group}
+            title={product.data.title}
+            shortDescription={product.data.shortDescription}
+            image={product.data.image}
+            imageAlt={product.data.imageAlt}
+          />
+        ))
+      }
+    </div>
+    <p style="margin-top:28px;">
+      <a class="btn btn-secondary" href={localizedPath(lang, "products")}>
+        {t("home.products.viewAll")}
+      </a>
+    </p>
+  </section>
+</Layout>

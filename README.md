@@ -18,6 +18,39 @@ manufacturer's).
 Everything else in here is placeholder content — swap it for the real
 product line, certificates, and copy before launch.
 
+## Design direction
+
+The site uses a dark, cinematic "engineered route" visual system: a
+near-black canvas, oversized bold display type, and one vivid blue accent
+that stands in for the route from manufacturer (Galkynysh Plastik, in
+Turkmenistan) to EU market. A few notes if you're picking this back up:
+
+- **Design tokens** live at the top of `src/styles/global.css` (`--void`,
+  `--panel`, `--paper`, `--mist`, `--route`, etc.) — change the palette
+  there and it propagates everywhere, since every page reuses the same
+  component classes (`.card`, `.btn`, `.hero`, `.notice`, etc.).
+- **The RouteDial** (`src/components/RouteDial.astro`) is the site's one
+  signature graphic — an inline SVG compass/gauge on the homepage hero.
+  It's built as real SVG elements (not an image) specifically so it can be
+  animated.
+- **Scroll animation** is handled by `src/components/ScrollFX.astro`
+  (included once, globally, via `Layout.astro`), using GSAP + ScrollTrigger
+  for two things: a fade/slide-up reveal on any element marked `.reveal`,
+  and a scroll-linked rotation of the RouteDial's needle as you scroll
+  through the homepage hero. Both are skipped entirely for
+  `prefers-reduced-motion` — content just appears immediately, no motion.
+- **Numbered section labels** (01, 02, 03...) only appear on the homepage,
+  where they narrate a real sequence (origin → representation → product
+  range → certification → contact). Other pages use a plain, unnumbered
+  eyebrow label — don't add numbering there, it wouldn't correspond to an
+  actual sequence.
+- This was built without a way to render a live screenshot in the build
+  environment, so it's been checked carefully in code (contrast, dark
+  variants of every hardcoded color, product illustration SVGs recolored
+  for dark cards) but not pixel-verified in an actual browser. Run
+  `npm run dev` and look it over before treating it as final, especially
+  on mobile widths.
+
 ## Running it locally
 
 ```

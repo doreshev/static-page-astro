@@ -1,0 +1,51 @@
+---
+// Included once, globally, via Layout.astro. Handles two things:
+//  1. Fade/slide-up reveal for any element marked `.reveal`, as it enters
+//     the viewport (used across every page for section content).
+//  2. On the homepage only: rotates the RouteDial's needle further as the
+//     visitor scrolls through the hero, literally "tracing the route".
+// Both are skipped entirely for prefers-reduced-motion -- content is just
+// shown immediately, no motion at all.
+---
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  const revealEls = document.querySelectorAll<HTMLElement>(".reveal");
+
+  if (prefersReducedMotion) {
+    revealEls.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    revealEls.forEach((el) => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        once: true,
+        onEnter: () => el.classList.add("is-visible"),
+      });
+    });
+
+    const needle = document.getElementById("route-needle");
+    const hero = document.querySelector(".hero");
+    if (needle && hero) {
+      gsap.set(needle, { rotate: -18 });
+      gsap.to(needle, {
+        rotate: 46,
+        ease: "none",
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.6,
+        },
+      });
+    }
+  }
+</script>

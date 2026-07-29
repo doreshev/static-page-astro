@@ -1,6 +1,6 @@
 ---
 import { useTranslations, localizedPath } from "../i18n/utils";
-import { locales, type Locale } from "../i18n/ui";
+import type { Locale } from "../i18n/ui";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 
 interface Props {
@@ -10,19 +10,20 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const currentPath = Astro.url.pathname;
 
+// "Home" is reached via the logo, matching how the nav reads elsewhere on
+// the site -- these are the sections a visitor moves between.
 const links = [
-  { href: localizedPath(lang, ""), key: "nav.home" as const },
   { href: localizedPath(lang, "products"), key: "nav.products" as const },
   { href: localizedPath(lang, "certificates"), key: "nav.certificates" as const },
   { href: localizedPath(lang, "catalogue"), key: "nav.catalogue" as const },
-  { href: localizedPath(lang, "contact"), key: "nav.contact" as const },
 ];
+const contactHref = localizedPath(lang, "contact");
 ---
 
 <header class="site-header">
   <div class="wrap site-header__bar">
     <a class="brand" href={localizedPath(lang, "")}>
-      RONESANS TRADING
+      <span><span class="mark">RO</span>NESANS TRADING</span>
       <small>{t("brand.tagline")}</small>
     </a>
     <nav aria-label="Main">
@@ -41,6 +42,15 @@ const links = [
         }
       </ul>
     </nav>
-    <LanguageSwitcher lang={lang} />
+    <div style="display:flex; align-items:center; gap:16px;">
+      <LanguageSwitcher lang={lang} />
+      <a
+        class="nav-cta"
+        href={contactHref}
+        aria-current={currentPath === contactHref ? "page" : undefined}
+      >
+        {t("nav.contact")} ↗
+      </a>
+    </div>
   </div>
 </header>

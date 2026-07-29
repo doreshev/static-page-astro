@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ProductCard from "../../components/ProductCard.astro";
+import RouteDial from "../../components/RouteDial.astro";
 import { getCollection } from "astro:content";
 import { locales, type Locale } from "../../i18n/ui";
 import { useTranslations, localizedPath } from "../../i18n/utils";
@@ -16,25 +17,46 @@ const allProducts = await getCollection("products");
 const featured = allProducts
   .filter((p) => p.data.lang === lang && p.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
+
+const titleLines = t("home.title").split("\n");
+const aboutParagraphs = t("home.about.body").split("\n\n");
 ---
 
-<Layout lang={lang} title={t("home.title")} description={t("home.lead")}>
+<Layout lang={lang} title={t("home.title").replace(/\n/g, " ")} description={t("home.lead")}>
   <section class="hero wrap">
-    <p class="eyebrow">{t("home.eyebrow")}</p>
-    <h1 class="hero__title">{t("home.title")}</h1>
-    <p class="lead hero__lead">{t("home.lead")}</p>
-    <a class="btn" href={localizedPath(lang, "products")}>{t("home.cta")}</a>
-  </section>
-
-  <section class="section section--bordered wrap">
-    <div class="section__head">
-      <h2>{t("home.about.title")}</h2>
-      {t("home.about.body").split("\n\n").map((paragraph) => <p>{paragraph}</p>)}
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__index">01 —</span> {t("home.eyebrow")}</p>
+        <h1 class="hero__title">
+          {titleLines.map((line, i) => (
+            <span class={i === titleLines.length - 1 ? "accent" : ""} style="display:block;">
+              {line}
+            </span>
+          ))}
+        </h1>
+        <p class="lead hero__lead">{t("home.lead")}</p>
+        <div class="hero__actions">
+          <a class="btn" href={localizedPath(lang, "products")}>{t("home.cta")}</a>
+        </div>
+        <p class="hero__scrollcue">{t("home.scrollcue")} ↓</p>
+      </div>
+      <div class="hero__graphic" aria-hidden="true">
+        <RouteDial />
+      </div>
     </div>
   </section>
 
-  <section class="section wrap">
+  <section class="section section--bordered wrap reveal">
     <div class="section__head">
+      <p class="eyebrow"><span class="eyebrow__index">02 —</span> {t("home.about.eyebrow")}</p>
+      <h2>{t("home.about.title")}</h2>
+      {aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </section>
+
+  <section class="section section--bordered wrap reveal">
+    <div class="section__head">
+      <p class="eyebrow"><span class="eyebrow__index">03 —</span> {t("home.products.eyebrow")}</p>
       <h2>{t("home.products.title")}</h2>
     </div>
     <div class="grid">
@@ -56,5 +78,25 @@ const featured = allProducts
         {t("home.products.viewAll")}
       </a>
     </p>
+  </section>
+
+  <section class="section section--bordered wrap reveal">
+    <div class="section__head">
+      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.certifications.eyebrow")}</p>
+      <h2>{t("home.certifications.title")}</h2>
+      <p class="lead">{t("home.certifications.body")}</p>
+    </div>
+    <a class="btn btn-secondary" href={localizedPath(lang, "certificates")}>
+      {t("home.certifications.cta")}
+    </a>
+  </section>
+
+  <section class="section wrap reveal">
+    <div class="section__head">
+      <p class="eyebrow"><span class="eyebrow__index">05 —</span> {t("home.contact.eyebrow")}</p>
+      <h2>{t("home.contact.title")}</h2>
+      <p class="lead">{t("home.contact.body")}</p>
+    </div>
+    <a class="btn" href={localizedPath(lang, "contact")}>{t("nav.contact")}</a>
   </section>
 </Layout>

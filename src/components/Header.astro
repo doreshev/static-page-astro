@@ -14,6 +14,7 @@ const currentPath = Astro.url.pathname;
 // the site -- these are the sections a visitor moves between.
 const links = [
   { href: localizedPath(lang, "products"), key: "nav.products" as const },
+  { href: localizedPath(lang, "facility"), key: "nav.facility" as const },
   { href: localizedPath(lang, "certificates"), key: "nav.certificates" as const },
   { href: localizedPath(lang, "catalogue"), key: "nav.catalogue" as const },
 ];

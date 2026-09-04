@@ -3,7 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import ProductCard from "../../../components/ProductCard.astro";
 import { getCollection } from "astro:content";
 import { locales, type Locale } from "../../../i18n/ui";
-import { useTranslations } from "../../../i18n/utils";
+import { useTranslations, withLangFallback } from "../../../i18n/utils";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -13,9 +13,9 @@ const { lang } = Astro.params as { lang: Locale };
 const t = useTranslations(lang);
 
 const allProducts = await getCollection("products");
-const products = allProducts
-  .filter((p) => p.data.lang === lang)
-  .sort((a, b) => a.data.order - b.data.order);
+const products = withLangFallback(allProducts, lang).sort(
+  (a, b) => a.data.order - b.data.order
+);
 ---
 
 <Layout lang={lang} title={t("products.title")} description={t("products.lead")}>
@@ -35,6 +35,7 @@ const products = allProducts
             shortDescription={product.data.shortDescription}
             image={product.data.image}
             imageAlt={product.data.imageAlt}
+            sourceLang={product.data.lang}
           />
         ))
       }

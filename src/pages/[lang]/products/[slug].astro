@@ -3,14 +3,19 @@ import { Image } from "astro:assets";
 import Layout from "../../../layouts/Layout.astro";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import { locales, type Locale } from "../../../i18n/ui";
-import { useTranslations, localizedPath } from "../../../i18n/utils";
+import { useTranslations, localizedPath, withLangFallback } from "../../../i18n/utils";
 
 export async function getStaticPaths() {
   const allProducts = await getCollection("products");
-  return allProducts.map((product) => ({
-    params: { lang: product.data.lang, slug: product.data.group },
-    props: { product },
-  }));
+  // Resolve English-fallback per locale so every product gets a page on
+  // all 3 language routes, even before it has a translation.
+  return locales.flatMap((lang) => {
+    const resolved = withLangFallback(allProducts, lang);
+    return resolved.map((product) => ({
+      params: { lang, slug: product.data.group },
+      props: { product },
+    }));
+  });
 }
 
 const { lang } = Astro.params as { lang: Locale; slug: string };
@@ -30,7 +35,10 @@ const { Content } = await render(product);
         height={525}
       />
       <div>
-        <p class="eyebrow">{product.data.group}</p>
+        <p class="eyebrow">
+          {product.data.group}
+          {product.data.lang !== lang && ` · ${product.data.lang.toUpperCase()}`}
+        </p>
         <h1>{product.data.title}</h1>
         <p class="lead">{product.data.shortDescription}</p>
         <Content />

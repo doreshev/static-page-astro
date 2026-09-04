@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { locales, type Locale } from "../../i18n/ui";
 import { useTranslations, withLangFallback } from "../../i18n/utils";
+import posterPhoto from "../../content/facility/images/factory-nameplate.jpg";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -12,35 +13,47 @@ export function getStaticPaths() {
 const { lang } = Astro.params as { lang: Locale };
 const t = useTranslations(lang);
 
-// Certificates are currently supplied in English only. withLangFallback
-// prefers a same-language entry if one exists, falling back to English
-// otherwise -- once someone adds e.g. cert-1-de.md, the German page picks
-// it up automatically, no code change needed here.
-const allCertificates = await getCollection("certificates");
-const certificates = withLangFallback(allCertificates, lang).sort(
+const posterImage = await getImage({ src: posterPhoto, width: 1200 });
+
+// Same English-fallback pattern used across products/certificates.
+const allPhotos = await getCollection("facility");
+const photos = withLangFallback(allPhotos, lang).sort(
   (a, b) => a.data.order - b.data.order
 );
 
-// Precompute a larger optimized variant of each certificate photo for the
-// click-to-expand lightbox. Built once at build time, so opening the
-// lightbox on the live site is just an <img src> swap -- no extra
-// third-party JS library needed.
 const fullImages = await Promise.all(
-  certificates.map((cert) => getImage({ src: cert.data.image, width: 1400 }))
+  photos.map((photo) => getImage({ src: photo.data.image, width: 1600 }))
 );
 ---
 
-<Layout lang={lang} title={t("certificates.title")} description={t("certificates.lead")}>
+<Layout lang={lang} title={t("facility.title")} description={t("facility.lead")}>
   <section class="section wrap reveal">
     <div class="section__head">
-      <p class="eyebrow">{t("nav.certificates")}</p>
-      <h1>{t("certificates.title")}</h1>
-      <p class="lead">{t("certificates.lead")}</p>
+      <p class="eyebrow">{t("nav.facility")}</p>
+      <h1>{t("facility.title")}</h1>
+      <p class="lead">{t("facility.lead")}</p>
     </div>
+
+    <!--
+      PLACEHOLDER VIDEO -- public/videos/facility-overview.mp4 is currently
+      an empty 0-byte file. Replace that file (same name) with the real
+      video and this block works with no code changes. See README for
+      recommended format/size. No autoplay: a real click-to-play control
+      respects bandwidth and accessibility better than an autoplaying
+      background clip, especially for a file this size.
+    -->
+    <div class="video-block reveal">
+      <video controls preload="none" poster={posterImage.src} width="1200" height="675">
+        <source src="/videos/facility-overview.mp4" type="video/mp4" />
+        {t("facility.video.fallback")}{" "}
+        <a href="/videos/facility-overview.mp4">facility-overview.mp4</a>
+      </video>
+    </div>
+
     <div class="grid">
       {
-        certificates.map((cert, i) => {
-          const dialogId = `cert-dialog-${cert.data.group}`;
+        photos.map((photo, i) => {
+          const dialogId = `facility-dialog-${photo.data.group}`;
           return (
             <div class="card cert-card">
               <button
@@ -48,19 +61,19 @@ const fullImages = await Promise.all(
                 class="cert-trigger"
                 data-lightbox-target={dialogId}
                 aria-haspopup="dialog"
-                aria-label={`${t("certificates.viewLarger")}: ${cert.data.title}`}
+                aria-label={`${t("certificates.viewLarger")}: ${photo.data.caption}`}
               >
                 <Image
                   class="card__image"
-                  src={cert.data.image}
-                  alt={cert.data.imageAlt}
+                  src={photo.data.image}
+                  alt={photo.data.imageAlt}
                   width={400}
                   height={300}
                 />
               </button>
-              <p class="card__title">{cert.data.title}</p>
-              {cert.data.lang !== lang && (
-                <span class="card__meta">{cert.data.lang.toUpperCase()}</span>
+              <p class="card__desc">{photo.data.caption}</p>
+              {photo.data.lang !== lang && (
+                <span class="card__meta">{photo.data.lang.toUpperCase()}</span>
               )}
 
               <dialog id={dialogId} class="lightbox">
@@ -77,10 +90,10 @@ const fullImages = await Promise.all(
                   src={fullImages[i].src}
                   width={fullImages[i].attributes.width}
                   height={fullImages[i].attributes.height}
-                  alt={cert.data.imageAlt}
+                  alt={photo.data.imageAlt}
                   loading="lazy"
                 />
-                <p class="lightbox__caption">{cert.data.title}</p>
+                <p class="lightbox__caption">{photo.data.caption}</p>
               </dialog>
             </div>
           );
@@ -89,21 +102,13 @@ const fullImages = await Promise.all(
     </div>
 
     <script>
-      // Vanilla JS, no library: wires each thumbnail button to its <dialog>.
-      // Native <dialog> gives us Escape-to-close and modal focus trapping
-      // for free; we only need to handle opening and backdrop-click-to-close.
       document.querySelectorAll<HTMLButtonElement>("[data-lightbox-target]").forEach((trigger) => {
         const dialog = document.getElementById(trigger.dataset.lightboxTarget!) as HTMLDialogElement | null;
         if (!dialog) return;
-
         trigger.addEventListener("click", () => dialog.showModal());
-
-        // Clicking the backdrop (the dialog element itself, outside its
-        // content box) closes it; clicking the image/caption does not.
         dialog.addEventListener("click", (event) => {
           if (event.target === dialog) dialog.close();
         });
-
         dialog.querySelector("[data-lightbox-close]")?.addEventListener("click", () => dialog.close());
       });
     </script>

@@ -1,10 +1,12 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import RouteDial from "../../components/RouteDial.astro";
 import { getCollection } from "astro:content";
 import { locales, type Locale } from "../../i18n/ui";
-import { useTranslations, localizedPath } from "../../i18n/utils";
+import { useTranslations, localizedPath, withLangFallback } from "../../i18n/utils";
+import heroPhoto from "../../content/facility/images/pipe-tunnel.jpg";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -14,9 +16,15 @@ const { lang } = Astro.params as { lang: Locale };
 const t = useTranslations(lang);
 
 const allProducts = await getCollection("products");
-const featured = allProducts
-  .filter((p) => p.data.lang === lang && p.data.featured)
+const featured = withLangFallback(allProducts, lang)
+  .filter((p) => p.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
+
+const allPhotos = await getCollection("facility");
+const facilityTeaser = withLangFallback(allPhotos, lang)
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
 
 const titleLines = t("home.title").split("\n");
 const aboutParagraphs = t("home.about.body").split("\n\n");
@@ -24,6 +32,9 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
 
 <Layout lang={lang} title={t("home.title").replace(/\n/g, " ")} description={t("home.lead")}>
   <section class="hero wrap">
+    <div class="hero__bg" aria-hidden="true">
+      <Image src={heroPhoto} alt="" width={1600} />
+    </div>
     <div class="hero__grid">
       <div>
         <p class="eyebrow"><span class="eyebrow__index">01 —</span> {t("home.eyebrow")}</p>
@@ -41,7 +52,7 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
         <p class="hero__scrollcue">{t("home.scrollcue")} ↓</p>
       </div>
       <div class="hero__graphic" aria-hidden="true">
-        <RouteDial />
+        <RouteDial size={340} />
       </div>
     </div>
   </section>
@@ -56,7 +67,39 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
 
   <section class="section section--bordered wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">03 —</span> {t("home.products.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">03 —</span> {t("home.facility.eyebrow")}</p>
+      <h2>{t("home.facility.title")}</h2>
+      <p class="lead">{t("home.facility.body")}</p>
+    </div>
+    <div class="grid">
+      {
+        facilityTeaser.map((photo) => (
+          <a class="card" href={localizedPath(lang, "facility")}>
+            <Image
+              class="card__image"
+              src={photo.data.image}
+              alt={photo.data.imageAlt}
+              width={400}
+              height={300}
+            />
+            <p class="card__desc">{photo.data.caption}</p>
+            {photo.data.lang !== lang && (
+              <span class="card__meta">{photo.data.lang.toUpperCase()}</span>
+            )}
+          </a>
+        ))
+      }
+    </div>
+    <p style="margin-top:28px;">
+      <a class="btn btn-secondary" href={localizedPath(lang, "facility")}>
+        {t("home.facility.cta")}
+      </a>
+    </p>
+  </section>
+
+  <section class="section section--bordered wrap reveal">
+    <div class="section__head">
+      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.products.eyebrow")}</p>
       <h2>{t("home.products.title")}</h2>
     </div>
     <div class="grid">
@@ -69,6 +112,7 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
             shortDescription={product.data.shortDescription}
             image={product.data.image}
             imageAlt={product.data.imageAlt}
+            sourceLang={product.data.lang}
           />
         ))
       }
@@ -82,7 +126,7 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
 
   <section class="section section--bordered wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.certifications.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">05 —</span> {t("home.certifications.eyebrow")}</p>
       <h2>{t("home.certifications.title")}</h2>
       <p class="lead">{t("home.certifications.body")}</p>
     </div>
@@ -93,7 +137,7 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
 
   <section class="section wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">05 —</span> {t("home.contact.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">06 —</span> {t("home.contact.eyebrow")}</p>
       <h2>{t("home.contact.title")}</h2>
       <p class="lead">{t("home.contact.body")}</p>
     </div>

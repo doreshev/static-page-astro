@@ -1,8 +1,8 @@
 # Ronesans Trading — website
 
 A trilingual (EN/DE/FR) static company site built with Astro: home page,
-product gallery with detail pages, certificates, a downloadable PDF
-catalogue, and a contact form.
+product catalogue, a facility/operations gallery with video, certificates,
+a downloadable PDF catalogue, and a contact form.
 
 **Naming:** the site markets products manufactured by **Galkynysh
 Plastik**, but the legal entity operating this website is **Ronesans
@@ -15,8 +15,11 @@ legal name "Ronesans Trading Lux" with a note on which one belongs in the
 legal-notice section (the representative's registration details, not the
 manufacturer's).
 
-Everything else in here is placeholder content — swap it for the real
-product line, certificates, and copy before launch.
+The 10 products already have real copy from the manufacturer's catalogue
+— **see `PRODUCT_GUIDE.md`** for exactly what's left to do (mainly: swap
+in real photos). Certificates, facility photos, and the video are also
+using placeholder or manufacturer-supplied assets — check each section
+below before launch.
 
 ## Design direction
 
@@ -28,11 +31,16 @@ Turkmenistan) to EU market. A few notes if you're picking this back up:
 - **Design tokens** live at the top of `src/styles/global.css` (`--void`,
   `--panel`, `--paper`, `--mist`, `--route`, etc.) — change the palette
   there and it propagates everywhere, since every page reuses the same
-  component classes (`.card`, `.btn`, `.hero`, `.notice`, etc.).
+  component classes (`.card`, `.btn`, `.hero`, `.notice`, etc.). This is a
+  single dark theme by design — there's no light-mode toggle.
 - **The RouteDial** (`src/components/RouteDial.astro`) is the site's one
   signature graphic — an inline SVG compass/gauge on the homepage hero.
   It's built as real SVG elements (not an image) specifically so it can be
   animated.
+- **The homepage hero background** is a real facility photo
+  (`src/content/facility/images/pipe-tunnel.jpg`), dimmed with a
+  gradient overlay (darker behind the text column, lighter behind the
+  RouteDial) so both stay legible over the photo.
 - **Scroll animation** is handled by `src/components/ScrollFX.astro`
   (included once, globally, via `Layout.astro`), using GSAP + ScrollTrigger
   for two things: a fade/slide-up reveal on any element marked `.reveal`,
@@ -40,14 +48,15 @@ Turkmenistan) to EU market. A few notes if you're picking this back up:
   through the homepage hero. Both are skipped entirely for
   `prefers-reduced-motion` — content just appears immediately, no motion.
 - **Numbered section labels** (01, 02, 03...) only appear on the homepage,
-  where they narrate a real sequence (origin → representation → product
-  range → certification → contact). Other pages use a plain, unnumbered
-  eyebrow label — don't add numbering there, it wouldn't correspond to an
-  actual sequence.
+  where they narrate a real sequence (origin → who we are → facility →
+  product range → certification → contact). Other pages use a plain,
+  unnumbered eyebrow label — don't add numbering there, it wouldn't
+  correspond to an actual sequence.
 - This was built without a way to render a live screenshot in the build
   environment, so it's been checked carefully in code (contrast, dark
-  variants of every hardcoded color, product illustration SVGs recolored
-  for dark cards) but not pixel-verified in an actual browser. Run
+  variants of every hardcoded color) and spot-checked with a local
+  WeasyPrint render (a CSS-to-PDF renderer, not a real browser — good
+  enough to catch gross errors, not a substitute for the real thing). Run
   `npm run dev` and look it over before treating it as final, especially
   on mobile widths.
 
@@ -62,22 +71,38 @@ npm run preview   # serve the built dist/ locally
 
 ## Project structure
 
-- `src/content/products/` — one Markdown file per product **per language**
-  (e.g. `hdpe-pipe-en.md`, `hdpe-pipe-de.md`, `hdpe-pipe-fr.md`), tied
-  together by a shared `group` id. Images live in
-  `src/content/products/images/` (currently placeholder line-art SVGs —
-  replace with real product photos, same filenames or update the `image:`
-  path in the matching `.md` file).
-- `src/content/certificates/` — currently 3 English-only entries
-  (`cert-1-en.md`, `cert-2-en.md`, `cert-3-en.md`), images colocated at
-  `src/content/certificates/images/Cert1.jpg` / `Cert2.jpg` / `Cert3.jpg`.
-  Every language page falls back to these English entries automatically.
-  To add a German or French certificate later, just add e.g.
-  `cert-1-de.md` with `lang: "de"` and the same `group: "cert-1"` — the
-  certificates page picks it up with no code changes. Edit the placeholder
-  `title`/`issuer` text in each `.md` file to match the real certificates.
+- `src/content/products/` — **see `PRODUCT_GUIDE.md`** for the full
+  breakdown. One Markdown file per product (currently English-only, e.g.
+  `hdpe-pipes-en.md`), tied to translations by a shared `group` id.
+  Content is real (from the manufacturer's catalogue); photos are
+  placeholders pending real product photography.
+- `src/content/certificates/` — 3 English-only entries, deliberately
+  minimal per request: just a photo and a name, no issuer/expiry/
+  description fields. Images are colocated at
+  `src/content/certificates/images/`. To add a translation, add e.g.
+  `cert-1-de.md` with `lang: "de"` and the same `group: "cert-1"` — every
+  page falls back to English automatically until a translation exists (see
+  "How the language-fallback system works" below).
+- `src/content/facility/` — real photos of the manufacturing facility and
+  site work, used for the homepage hero background, the homepage's
+  "Where it's made" teaser section, and the `/facility/` gallery page.
+  Currently 4 photos; add more by dropping a new photo into
+  `src/content/facility/images/` and a matching `<group>-en.md` file
+  (copy an existing one as a template) — no code changes needed, the
+  gallery grid picks up any number of entries automatically.
+- `public/videos/facility-overview.mp4` — **currently an empty 0-byte
+  placeholder file.** Replace it with the real video, same filename, and
+  the `/facility/` page's video player works with no code changes. Keep
+  the file reasonably web-sized (H.264 MP4, ideally under ~50MB — large
+  raw camera exports will make the page slow to load) and update the
+  poster frame if needed (`src/content/facility/images/factory-nameplate.jpg`,
+  set in `src/pages/[lang]/facility.astro`).
 - `src/i18n/ui.ts` — every UI string (nav labels, button text, etc.) in all
   three languages. Edit here for site-wide wording changes.
+- `src/i18n/utils.ts` — includes `withLangFallback()`, the shared helper
+  every English-only collection (products, certificates, facility) uses
+  to fall back to English on `/de/` and `/fr/` pages until a translation
+  exists. See "How the language-fallback system works" below.
 - `src/pages/[lang]/...` — the page templates. One set of files serves all
   three languages via Astro's `getStaticPaths`.
 - `public/catalogue/Catalogue-2026-eng.pdf` — the one downloadable
@@ -89,21 +114,41 @@ npm run preview   # serve the built dist/ locally
   catalogues exist, add e.g. `Catalogue-2026-de.pdf` and extend that same
   `pdfPath` logic to pick the right file per language.
 
-## Why product/certificate images live in `src/content/`, not `public/`
+## How the language-fallback system works
 
-Both product and certificate photos are colocated with their Markdown
-files under `src/content/` and referenced through Astro's `image()`
-schema helper, rather than dropped straight into `public/`. The practical
-difference: images under `src/content/` get run through Astro's build-time
-optimization pipeline (auto-resized, converted to WebP, width/height set
-to avoid layout shift), while anything in `public/` is served exactly as
-uploaded. For real photos and scans -- which can easily be several MB
-straight off a phone or scanner -- that optimization matters for page
-speed. The placeholder certificate JPGs in this project shrank from ~39KB
-to ~3KB WebP automatically on build, and real photos would see a similar
-or larger improvement. Dropping in a replacement file is exactly as easy
-either way, so there's no convenience trade-off, only a performance one --
-which is why certificates ended up here too rather than in `public/`.
+Products, certificates, and facility photos are all currently
+English-only. Rather than a blank page on `/de/` or `/fr/` until every
+item is translated, `withLangFallback()` in `src/i18n/utils.ts` groups
+entries by their shared `group` id and prefers a same-language entry when
+one exists, otherwise falls back to English. A small "· EN" tag appears
+on any card/page showing fallback content, so it's clear at a glance
+what's still untranslated.
+
+To add a translation for anything (a product, a certificate, a facility
+photo), copy the existing `<group>-en.md` file to `<group>-de.md` (or
+`-fr.md`), change `lang: "en"` to `lang: "de"`, keep `group` identical,
+and translate the content. It's picked up automatically on the next
+build — no code changes anywhere.
+
+## Why product/certificate/facility images live in `src/content/`, not `public/`
+
+Product, certificate, and facility photos are all colocated with their
+Markdown files under `src/content/` and referenced through Astro's
+`image()` schema helper, rather than dropped straight into `public/`. The
+practical difference: images under `src/content/` get run through Astro's
+build-time optimization pipeline (auto-resized, converted to WebP,
+width/height set to avoid layout shift), while anything in `public/` is
+served exactly as uploaded. For real photos and scans -- which can easily
+be several MB straight off a phone or scanner -- that optimization
+matters for page speed. The placeholder certificate JPGs in this project
+shrank from ~40KB to ~7-13KB WebP automatically on build, and a couple of
+the facility photos went from ~85-143KB down to well under half that.
+Dropping in a replacement file is exactly as easy either way, so there's
+no convenience trade-off, only a performance one.
+
+The one exception is the facility video
+(`public/videos/facility-overview.mp4`) — Astro's image pipeline doesn't
+apply to video, so it lives in `public/` like the catalogue PDF.
 
 ## Hosting (free, commercial use allowed)
 
@@ -172,20 +217,21 @@ require restructuring anything else in this project.
 ## GDPR, cookies, and the legal-notice page
 
 This build ships **zero cookies and zero third-party requests** by
-design — no analytics, no embedded videos, no Google Fonts (the site uses
-only system fonts, see `src/styles/global.css`), nothing that calls out to
-a third party. If that stays true, you do **not** need a cookie-consent
-banner — the ePrivacy/cookie-consent rules are triggered by setting
-cookies or using non-essential tracking technology, not by having a
-website.
+design — no analytics, no Google Fonts (the site uses only system fonts,
+see `src/styles/global.css`), nothing that calls out to a third party.
+The facility video is self-hosted (`public/videos/`), not an embedded
+YouTube/Vimeo player, so it doesn't introduce a third-party call either.
+If that stays true, you do **not** need a cookie-consent banner — the
+ePrivacy/cookie-consent rules are triggered by setting cookies or using
+non-essential tracking technology, not by having a website.
 
 That said, a cookie banner and a privacy notice are two different
 questions:
 - **No cookies → no cookie banner needed**, as long as it stays that
-  way. The moment you add analytics, an embedded YouTube video, Google
-  Fonts loaded from Google's servers, a chat widget, or a reCAPTCHA-style
-  form protection, that thing very likely sets a cookie or makes a
-  third-party network call, and the calculus changes.
+  way. The moment you add analytics, an *embedded* YouTube/Vimeo video,
+  Google Fonts loaded from Google's servers, a chat widget, or a
+  reCAPTCHA-style form protection, that thing very likely sets a cookie or
+  makes a third-party network call, and the calculus changes.
 - **A privacy notice is still needed regardless of cookies.** The contact
   form collects a name, email, and message — that's personal data
   processing under GDPR independent of cookies — and so, separately, is

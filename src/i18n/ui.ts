@@ -19,6 +19,7 @@ export const ui = {
     "nav.certificates": "Certificates",
     "nav.catalogue": "Catalogue",
     "nav.contact": "Contact",
+    "nav.facility": "Facility",
     "brand.tagline": "EU representative of Galkynysh Plastik",
     "home.eyebrow": "Official EU representative of Galkynysh Plastik",
     "home.title": "FROM\nTURKMEN PLANT\nTO\nEU JOBSITE.",
@@ -27,9 +28,13 @@ export const ui = {
     "home.cta": "Browse the product range",
     "home.scrollcue": "Scroll to follow the route",
     "home.about.eyebrow": "Who we are",
-    "home.about.title": "About us",
-    "home.about.body":
+    "home.about.title": "About us",    "home.about.body":
       "Ronesans Trading is the official European Union representative of Galkynysh Plastik, a modern manufacturing company specializing in high-quality plastic and polymer products for construction, infrastructure, agriculture, and industrial applications.\n\nGalkynysh Plastik's product range includes HDPE pipes, corrugated drainage pipes, geomembranes, geogrids, drainage membranes, irrigation systems, and rubber products such as paving tiles and curbstones. All products are designed to meet contemporary technical standards, ensuring durability, reliability, and a long service life across a wide range of climatic and operational conditions.\n\nCombining advanced production technology, strict quality control, and carefully selected raw materials, Galkynysh Plastik delivers products that comply with international norms -- with particular attention to environmental responsibility, offering solutions that are safe, efficient, and sustainable.",
+    "home.facility.eyebrow": "Where it's made",
+    "home.facility.title": "Inside the operation",
+    "home.facility.body":
+      "A look at the manufacturing facility, equipment, and completed site work behind the product range.",
+    "home.facility.cta": "View the gallery",
     "home.products.eyebrow": "Product range",
     "home.products.title": "Featured products",
     "home.products.viewAll": "View all products",
@@ -50,8 +55,6 @@ export const ui = {
     "certificates.title": "Certificates",
     "certificates.lead":
       "Compliance documentation for the manufacturer's processes and materials.",
-    "certificates.issuedBy": "Issued by",
-    "certificates.validUntil": "Valid until",
     "certificates.viewLarger": "View larger",
     "certificates.close": "Close",
     "catalogue.title": "Catalogue",
@@ -60,6 +63,10 @@ export const ui = {
       "The catalogue is currently available in English only. A translated version will be added later.",
     "catalogue.download": "Download PDF",
     "catalogue.fileSize": "File size",
+    "facility.title": "Facility & Operations",
+    "facility.lead": "Photos from the manufacturing facility and completed project sites.",
+    "facility.video.title": "Facility overview",
+    "facility.video.fallback": "Your browser doesn't support embedded video. Download the video instead:",
     "contact.title": "Contact",
     "contact.lead":
       "Questions about a product, a quote, or becoming a distributor? Send us a message.",
@@ -83,6 +90,7 @@ export const ui = {
     "nav.certificates": "Zertifikate",
     "nav.catalogue": "Katalog",
     "nav.contact": "Kontakt",
+    "nav.facility": "Werk",
     "brand.tagline": "EU-Vertreter von Galkynysh Plastik",
     "home.eyebrow": "Offizieller EU-Vertreter von Galkynysh Plastik",
     "home.title": "VOM\nTURKMENISCHEN WERK\nZUR\nEU-BAUSTELLE.",
@@ -94,6 +102,11 @@ export const ui = {
     "home.about.title": "Über uns",
     "home.about.body":
       "Ronesans Trading ist der offizielle Vertreter von Galkynysh Plastik in der Europäischen Union. Galkynysh Plastik ist ein modernes Fertigungsunternehmen, das sich auf die Herstellung hochwertiger Kunststoff- und Polymerprodukte für Bau, Infrastruktur, Landwirtschaft und industrielle Anwendungen spezialisiert hat.\n\nDas Produktsortiment von Galkynysh Plastik umfasst HDPE-Rohre, gewellte Drainagerohre, Geomembranen, Geogitter, Drainagematten, Bewässerungssysteme sowie Gummiprodukte wie Pflastersteine und Bordsteine. Alle Produkte erfüllen aktuelle technische Standards und gewährleisten Langlebigkeit, Zuverlässigkeit und eine lange Nutzungsdauer unter verschiedenen klimatischen und betrieblichen Bedingungen.\n\nDurch die Kombination aus fortschrittlicher Fertigungstechnologie, strenger Qualitätskontrolle und sorgfältig ausgewählten Rohstoffen liefert Galkynysh Plastik Produkte, die internationalen Normen entsprechen. Besonderer Wert wird auf ökologische Verantwortung gelegt -- mit sicheren, effizienten und nachhaltigen Lösungen.",
+    "home.facility.eyebrow": "Wo es entsteht",
+    "home.facility.title": "Einblick in den Betrieb",
+    "home.facility.body":
+      "Ein Einblick in die Fertigungsanlage, die Ausrüstung und abgeschlossene Bauvorhaben hinter dem Produktsortiment.",
+    "home.facility.cta": "Zur Galerie",
     "home.products.eyebrow": "Produktsortiment",
     "home.products.title": "Ausgewählte Produkte",
     "home.products.viewAll": "Alle Produkte ansehen",
@@ -114,8 +127,6 @@ export const ui = {
     "certificates.title": "Zertifikate",
     "certificates.lead":
       "Konformitätsnachweise für die Fertigungsprozesse und Materialien des Herstellers.",
-    "certificates.issuedBy": "Ausgestellt von",
-    "certificates.validUntil": "Gültig bis",
     "certificates.viewLarger": "Vergrößern",
     "certificates.close": "Schließen",
     "catalogue.title": "Katalog",
@@ -124,6 +135,10 @@ export const ui = {
       "Der Katalog liegt derzeit nur auf Englisch vor. Eine übersetzte Version folgt zu einem späteren Zeitpunkt.",
     "catalogue.download": "PDF herunterladen",
     "catalogue.fileSize": "Dateigröße",
+    "facility.title": "Werk & Betrieb",
+    "facility.lead": "Fotos aus der Fertigungsanlage und von abgeschlossenen Projekten.",
+    "facility.video.title": "Werksüberblick",
+    "facility.video.fallback": "Ihr Browser unterstützt kein eingebettetes Video. Video stattdessen herunterladen:",
     "contact.title": "Kontakt",
     "contact.lead":
       "Fragen zu einem Produkt, einem Angebot oder zur Vertriebspartnerschaft? Schreiben Sie uns.",
@@ -147,6 +162,7 @@ export const ui = {
     "nav.certificates": "Certificats",
     "nav.catalogue": "Catalogue",
     "nav.contact": "Contact",
+    "nav.facility": "Usine",
     "brand.tagline": "Représentant UE de Galkynysh Plastik",
     "home.eyebrow": "Représentant officiel de Galkynysh Plastik dans l'UE",
     "home.title": "DE L'USINE\nTURKMÈNE\nAU CHANTIER\nEUROPÉEN.",
@@ -158,6 +174,11 @@ export const ui = {
     "home.about.title": "À propos",
     "home.about.body":
       "Ronesans Trading est le représentant officiel de Galkynysh Plastik au sein de l'Union européenne. Galkynysh Plastik est une entreprise de fabrication moderne, spécialisée dans la production de produits plastiques et polymères de haute qualité pour la construction, les infrastructures, l'agriculture et les applications industrielles.\n\nLa gamme de produits de Galkynysh Plastik comprend des tuyaux en PEHD, des tuyaux de drainage annelés, des géomembranes, des géogrilles, des nappes de drainage, des systèmes d'irrigation, ainsi que des produits en caoutchouc tels que des dalles de pavage et des bordures. Tous les produits sont conçus pour répondre aux normes techniques actuelles, garantissant durabilité, fiabilité et longévité dans diverses conditions climatiques et opérationnelles.\n\nEn combinant des technologies de production avancées, un contrôle qualité strict et une sélection rigoureuse des matières premières, Galkynysh Plastik propose des produits conformes aux normes internationales, avec une attention particulière portée à la responsabilité environnementale à travers des solutions sûres, efficaces et durables.",
+    "home.facility.eyebrow": "Là où tout commence",
+    "home.facility.title": "À l'intérieur de l'usine",
+    "home.facility.body":
+      "Un aperçu du site de production, des équipements et des chantiers réalisés à l'origine de notre gamme de produits.",
+    "home.facility.cta": "Voir la galerie",
     "home.products.eyebrow": "Gamme de produits",
     "home.products.title": "Produits phares",
     "home.products.viewAll": "Voir tous les produits",
@@ -178,8 +199,6 @@ export const ui = {
     "certificates.title": "Certificats",
     "certificates.lead":
       "Documentation de conformité pour les processus de fabrication et les matériaux du fabricant.",
-    "certificates.issuedBy": "Délivré par",
-    "certificates.validUntil": "Valable jusqu'au",
     "certificates.viewLarger": "Agrandir",
     "certificates.close": "Fermer",
     "catalogue.title": "Catalogue",
@@ -188,6 +207,10 @@ export const ui = {
       "Le catalogue est actuellement disponible uniquement en anglais. Une version traduite sera ajoutée ultérieurement.",
     "catalogue.download": "Télécharger le PDF",
     "catalogue.fileSize": "Taille du fichier",
+    "facility.title": "Usine & opérations",
+    "facility.lead": "Photos du site de production et de chantiers réalisés.",
+    "facility.video.title": "Aperçu du site",
+    "facility.video.fallback": "Votre navigateur ne prend pas en charge la vidéo intégrée. Téléchargez la vidéo à la place :",
     "contact.title": "Contact",
     "contact.lead":
       "Des questions sur un produit, un devis, ou souhaitez devenir distributeur ? Envoyez-nous un message.",

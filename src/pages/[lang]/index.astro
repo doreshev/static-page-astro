@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import ProductCard from "../../components/ProductCard.astro";
-import RouteDial from "../../components/RouteDial.astro";
 import { getCollection } from "astro:content";
 import { locales, type Locale } from "../../i18n/ui";
 import { useTranslations, localizedPath, withLangFallback } from "../../i18n/utils";
@@ -20,11 +19,13 @@ const featured = withLangFallback(allProducts, lang)
   .filter((p) => p.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
 
+// One representative facility photo for the lightweight gallery link
+// below -- not the same photo as the hero background, so the two photo
+// moments on this page stay visually distinct.
 const allPhotos = await getCollection("facility");
-const facilityTeaser = withLangFallback(allPhotos, lang)
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3);
+const facilityPhoto = withLangFallback(allPhotos, lang).find(
+  (p) => p.data.group === "geogrid-slope"
+);
 
 const titleLines = t("home.title").split("\n");
 const aboutParagraphs = t("home.about.body").split("\n\n");
@@ -35,25 +36,20 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
     <div class="hero__bg" aria-hidden="true">
       <Image src={heroPhoto} alt="" width={1600} />
     </div>
-    <div class="hero__grid">
-      <div>
-        <p class="eyebrow"><span class="eyebrow__index">01 —</span> {t("home.eyebrow")}</p>
-        <h1 class="hero__title">
-          {titleLines.map((line, i) => (
-            <span class={i === titleLines.length - 1 ? "accent" : ""} style="display:block;">
-              {line}
-            </span>
-          ))}
-        </h1>
-        <p class="lead hero__lead">{t("home.lead")}</p>
-        <div class="hero__actions">
-          <a class="btn" href={localizedPath(lang, "products")}>{t("home.cta")}</a>
-        </div>
-        <p class="hero__scrollcue">{t("home.scrollcue")} ↓</p>
+    <div class="hero__content">
+      <p class="eyebrow"><span class="eyebrow__index">01 —</span> {t("home.eyebrow")}</p>
+      <h1 class="hero__title">
+        {titleLines.map((line, i) => (
+          <span class={i === titleLines.length - 1 ? "accent" : ""} style="display:block;">
+            {line}
+          </span>
+        ))}
+      </h1>
+      <p class="lead hero__lead">{t("home.lead")}</p>
+      <div class="hero__actions">
+        <a class="btn" href={localizedPath(lang, "products")}>{t("home.cta")}</a>
       </div>
-      <div class="hero__graphic" aria-hidden="true">
-        <RouteDial size={340} />
-      </div>
+      <p class="hero__scrollcue">{t("home.scrollcue")} ↓</p>
     </div>
   </section>
 
@@ -65,41 +61,24 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
     </div>
   </section>
 
-  <section class="section section--bordered wrap reveal">
-    <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">03 —</span> {t("home.facility.eyebrow")}</p>
-      <h2>{t("home.facility.title")}</h2>
-      <p class="lead">{t("home.facility.body")}</p>
-    </div>
-    <div class="grid">
-      {
-        facilityTeaser.map((photo) => (
-          <a class="card" href={localizedPath(lang, "facility")}>
-            <Image
-              class="card__image"
-              src={photo.data.image}
-              alt={photo.data.imageAlt}
-              width={400}
-              height={300}
-            />
-            <p class="card__desc">{photo.data.caption}</p>
-            {photo.data.lang !== lang && (
-              <span class="card__meta">{photo.data.lang.toUpperCase()}</span>
-            )}
-          </a>
-        ))
-      }
-    </div>
-    <p style="margin-top:28px;">
-      <a class="btn btn-secondary" href={localizedPath(lang, "facility")}>
-        {t("home.facility.cta")}
+  {facilityPhoto && (
+    <section class="facility-break wrap reveal">
+      <a class="facility-break__link" href={localizedPath(lang, "facility")}>
+        <Image
+          class="facility-break__image"
+          src={facilityPhoto.data.image}
+          alt={facilityPhoto.data.imageAlt}
+          width={640}
+          height={640}
+        />
+        <span class="facility-break__cta">{t("home.facility.cta")} →</span>
       </a>
-    </p>
-  </section>
+    </section>
+  )}
 
   <section class="section section--bordered wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.products.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">03 —</span> {t("home.products.eyebrow")}</p>
       <h2>{t("home.products.title")}</h2>
     </div>
     <div class="grid">
@@ -126,7 +105,7 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
 
   <section class="section section--bordered wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">05 —</span> {t("home.certifications.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.certifications.eyebrow")}</p>
       <h2>{t("home.certifications.title")}</h2>
       <p class="lead">{t("home.certifications.body")}</p>
     </div>
@@ -137,7 +116,7 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
 
   <section class="section wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">06 —</span> {t("home.contact.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">05 —</span> {t("home.contact.eyebrow")}</p>
       <h2>{t("home.contact.title")}</h2>
       <p class="lead">{t("home.contact.body")}</p>
     </div>

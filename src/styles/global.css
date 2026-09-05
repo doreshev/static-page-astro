@@ -1,23 +1,28 @@
 /* ============================================================
-   Design tokens -- "engineered route" direction: near-black
-   canvas, oversized display type, one vivid signature blue that
-   stands in for the route from manufacturer to EU market.
+   Design tokens -- "engineered route" direction: light, document-
+   forward canvas (better for the dense technical content this site
+   actually carries -- specs, certificates, catalogues), with one
+   vivid signature blue accent. The homepage hero is the one
+   deliberate exception -- see the .hero rule below, which locally
+   re-overrides these same variable names back to dark, so every
+   component (h1, p, .eyebrow, .btn...) needs zero special-casing to
+   render correctly in both contexts.
    Self-hosted system fonts only: no Google Fonts / external font
    requests, so the site stays free of third-party calls that
    would otherwise require cookie/consent handling.
    ============================================================ */
 :root {
-  --void: #05070c;         /* page background */
-  --panel: #0d1119;        /* card / panel background */
-  --panel-raised: #131a26; /* hover state */
-  --line: #212a38;         /* hairline borders on dark */
-  --line-bright: #34405a;  /* stronger hairline, e.g. active nav */
-  --paper: #f2f4f8;        /* headline / primary text, near-white */
-  --mist: #8b93a6;         /* secondary / muted text */
-  --route: #3b6dff;        /* signature accent -- the "route" blue */
-  --route-soft: #7fa1ff;   /* lighter blue for small text on dark */
-  --route-dim: rgba(59, 109, 255, 0.14);  /* tint backgrounds */
-  --route-glow: rgba(59, 109, 255, 0.5);  /* glow / shadow */
+  --void: #f7f7f5;         /* page background */
+  --panel: #ffffff;        /* card / panel background */
+  --panel-raised: #eef0ef; /* hover state */
+  --line: #dde1e0;         /* hairline borders on light */
+  --line-bright: #b7c0be;  /* stronger hairline, e.g. active nav */
+  --paper: #10151a;        /* headline / primary text, near-black */
+  --mist: #55606a;         /* secondary / muted text */
+  --route: #1f5fd6;        /* signature accent -- the "route" blue */
+  --route-soft: #1c46b8;   /* deeper blue for small text on light */
+  --route-dim: rgba(31, 95, 214, 0.08);   /* tint backgrounds */
+  --route-glow: rgba(31, 95, 214, 0.35);  /* glow / shadow */
 
   --font-display: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-body: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -34,7 +39,7 @@
 
 html {
   background: var(--void);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -129,7 +134,7 @@ p {
 /* --- Header / nav --- */
 .site-header {
   border-bottom: 1px solid var(--line);
-  background: rgba(5, 7, 12, 0.86);
+  background: rgba(247, 247, 245, 0.88);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
@@ -232,6 +237,22 @@ p {
    circular "route" graphic. The graphic is the one deliberate
    piece of boldness on the page -- everything else stays quiet. --- */
 .hero {
+  /* Locally re-override the global (now light-theme) tokens back to
+     their dark equivalents, just for this section. Every descendant --
+     h1, p, .eyebrow, .btn -- already reads these same variable names, so
+     nothing else needs to change for the hero to render as a dark band
+     on an otherwise light site. --void is deliberately NOT overridden:
+     .btn's hover state uses it, and leaving it at the light global value
+     gives a clean light "ghost button" hover against the dark photo. */
+  --paper: #f2f4f8;
+  --mist: #8b93a6;
+  --route: #3b6dff;
+  --route-soft: #7fa1ff;
+  --line: #212a38;
+  --line-bright: #34405a;
+  --panel: #0d1119;
+  --panel-raised: #131a26;
+
   position: relative;
   padding-block: 72px 64px;
   border-bottom: 1px solid var(--line);
@@ -246,20 +267,23 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.5) saturate(0.9);
+  filter: brightness(0.75) saturate(1.05);
 }
 .hero__bg::after {
   content: "";
   position: absolute;
   inset: 0;
   /* darkest behind the text, fading out toward the right so the photo
-     still reads clearly at the edge of the frame */
+     still reads clearly at the edge of the frame. Hardcoded dark values
+     here (not var(--void)) since this must stay dark regardless of the
+     page-wide theme. Lightened from the original pass per feedback that
+     it was too dark overall -- more of the photo shows through now. */
   background: linear-gradient(
     100deg,
-    var(--void) 0%,
-    rgba(5, 7, 12, 0.9) 40%,
-    rgba(5, 7, 12, 0.6) 70%,
-    rgba(5, 7, 12, 0.4) 100%
+    rgba(5, 7, 12, 0.8) 0%,
+    rgba(5, 7, 12, 0.62) 40%,
+    rgba(5, 7, 12, 0.4) 70%,
+    rgba(5, 7, 12, 0.2) 100%
   );
 }
 .hero__content {

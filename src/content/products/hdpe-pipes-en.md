@@ -3,8 +3,8 @@ lang: "en"
 group: "hdpe-pipes"
 title: "HDPE Pipes"
 shortDescription: "High-density polyethylene pipes for water supply, sewage, drainage, and agricultural systems."
-image: "./images/hdpe-pipes.svg"
-imageAlt: "PRODUCT PHOTO PLACEHOLDER — HDPE pipes"
+image: "./images/hdpe-pipes.png"
+imageAlt: "High-density polyethylene pipes"
 order: 1
 featured: true
 specs:

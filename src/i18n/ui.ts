@@ -27,18 +27,13 @@ export const ui = {
       "Ronesans Trading supplies HDPE pipes, geomembranes, drainage systems, and rubber products across the EU -- manufactured by Galkynysh Plastik to demanding technical standards.",
     "home.cta": "Browse the product range",
     "home.scrollcue": "Scroll to follow the route",
-    "home.about.eyebrow": "Who we are",
-    "home.about.title": "About us",    "home.about.body":
-      "Ronesans Trading is the official European Union representative of Galkynysh Plastik, a modern manufacturing company specializing in high-quality plastic and polymer products for construction, infrastructure, agriculture, and industrial applications.\n\nGalkynysh Plastik's product range includes HDPE pipes, corrugated drainage pipes, geomembranes, geogrids, drainage membranes, irrigation systems, and rubber products such as paving tiles and curbstones. All products are designed to meet contemporary technical standards, ensuring durability, reliability, and a long service life across a wide range of climatic and operational conditions.\n\nCombining advanced production technology, strict quality control, and carefully selected raw materials, Galkynysh Plastik delivers products that comply with international norms -- with particular attention to environmental responsibility, offering solutions that are safe, efficient, and sustainable.",
-    "home.facility.cta": "View the gallery",
+    "home.intro.eyebrow": "Who we are",
+    "home.intro.title": "About us",
+    "home.intro.body":
+      "Ronesans Trading is the official EU representative of Galkynysh Plastik, a manufacturer of engineered polymer products for construction, infrastructure, agriculture, and industry. Here's a closer look at how it's made.",
     "home.products.eyebrow": "Product range",
     "home.products.title": "Featured products",
     "home.products.viewAll": "View all products",
-    "home.certifications.eyebrow": "Compliance",
-    "home.certifications.title": "Certified quality",
-    "home.certifications.body":
-      "Galkynysh Plastik's quality management system is certified to ISO 9001:2015, verified by DQS GmbH and recognized internationally through IQNet.",
-    "home.certifications.cta": "View certificates",
     "home.contact.eyebrow": "Get in touch",
     "home.contact.title": "Let's talk about your project",
     "home.contact.body":
@@ -94,19 +89,13 @@ export const ui = {
       "Ronesans Trading liefert HDPE-Rohre, Geomembranen, Drainagesysteme und Gummiprodukte in der gesamten EU -- hergestellt von Galkynysh Plastik nach anspruchsvollen technischen Standards.",
     "home.cta": "Produktsortiment ansehen",
     "home.scrollcue": "Scrollen, um der Route zu folgen",
-    "home.about.eyebrow": "Wer wir sind",
-    "home.about.title": "Über uns",
-    "home.about.body":
-      "Ronesans Trading ist der offizielle Vertreter von Galkynysh Plastik in der Europäischen Union. Galkynysh Plastik ist ein modernes Fertigungsunternehmen, das sich auf die Herstellung hochwertiger Kunststoff- und Polymerprodukte für Bau, Infrastruktur, Landwirtschaft und industrielle Anwendungen spezialisiert hat.\n\nDas Produktsortiment von Galkynysh Plastik umfasst HDPE-Rohre, gewellte Drainagerohre, Geomembranen, Geogitter, Drainagematten, Bewässerungssysteme sowie Gummiprodukte wie Pflastersteine und Bordsteine. Alle Produkte erfüllen aktuelle technische Standards und gewährleisten Langlebigkeit, Zuverlässigkeit und eine lange Nutzungsdauer unter verschiedenen klimatischen und betrieblichen Bedingungen.\n\nDurch die Kombination aus fortschrittlicher Fertigungstechnologie, strenger Qualitätskontrolle und sorgfältig ausgewählten Rohstoffen liefert Galkynysh Plastik Produkte, die internationalen Normen entsprechen. Besonderer Wert wird auf ökologische Verantwortung gelegt -- mit sicheren, effizienten und nachhaltigen Lösungen.",
-    "home.facility.cta": "Zur Galerie",
+    "home.intro.eyebrow": "Wer wir sind",
+    "home.intro.title": "Über uns",
+    "home.intro.body":
+      "Ronesans Trading ist der offizielle EU-Vertreter von Galkynysh Plastik, einem Hersteller technischer Polymerprodukte für Bauwesen, Infrastruktur, Landwirtschaft und Industrie. Ein Einblick in die Fertigung:",
     "home.products.eyebrow": "Produktsortiment",
     "home.products.title": "Ausgewählte Produkte",
     "home.products.viewAll": "Alle Produkte ansehen",
-    "home.certifications.eyebrow": "Konformität",
-    "home.certifications.title": "Zertifizierte Qualität",
-    "home.certifications.body":
-      "Das Qualitätsmanagementsystem von Galkynysh Plastik ist nach ISO 9001:2015 zertifiziert, geprüft durch die DQS GmbH und international durch IQNet anerkannt.",
-    "home.certifications.cta": "Zertifikate ansehen",
     "home.contact.eyebrow": "Kontakt aufnehmen",
     "home.contact.title": "Sprechen wir über Ihr Projekt",
     "home.contact.body":
@@ -162,19 +151,13 @@ export const ui = {
       "Ronesans Trading fournit des tuyaux en PEHD, des géomembranes, des systèmes de drainage et des produits en caoutchouc dans toute l'UE -- fabriqués par Galkynysh Plastik selon des normes techniques exigeantes.",
     "home.cta": "Voir la gamme de produits",
     "home.scrollcue": "Faites défiler pour suivre la route",
-    "home.about.eyebrow": "Qui nous sommes",
-    "home.about.title": "À propos",
-    "home.about.body":
-      "Ronesans Trading est le représentant officiel de Galkynysh Plastik au sein de l'Union européenne. Galkynysh Plastik est une entreprise de fabrication moderne, spécialisée dans la production de produits plastiques et polymères de haute qualité pour la construction, les infrastructures, l'agriculture et les applications industrielles.\n\nLa gamme de produits de Galkynysh Plastik comprend des tuyaux en PEHD, des tuyaux de drainage annelés, des géomembranes, des géogrilles, des nappes de drainage, des systèmes d'irrigation, ainsi que des produits en caoutchouc tels que des dalles de pavage et des bordures. Tous les produits sont conçus pour répondre aux normes techniques actuelles, garantissant durabilité, fiabilité et longévité dans diverses conditions climatiques et opérationnelles.\n\nEn combinant des technologies de production avancées, un contrôle qualité strict et une sélection rigoureuse des matières premières, Galkynysh Plastik propose des produits conformes aux normes internationales, avec une attention particulière portée à la responsabilité environnementale à travers des solutions sûres, efficaces et durables.",
-    "home.facility.cta": "Voir la galerie",
+    "home.intro.eyebrow": "Qui nous sommes",
+    "home.intro.title": "À propos",
+    "home.intro.body":
+      "Ronesans Trading est le représentant officiel de Galkynysh Plastik dans l'UE, fabricant de produits polymères techniques pour la construction, les infrastructures, l'agriculture et l'industrie. Un aperçu de la production :",
     "home.products.eyebrow": "Gamme de produits",
     "home.products.title": "Produits phares",
     "home.products.viewAll": "Voir tous les produits",
-    "home.certifications.eyebrow": "Conformité",
-    "home.certifications.title": "Qualité certifiée",
-    "home.certifications.body":
-      "Le système de management de la qualité de Galkynysh Plastik est certifié ISO 9001:2015, vérifié par DQS GmbH et reconnu à l'international via IQNet.",
-    "home.certifications.cta": "Voir les certificats",
     "home.contact.eyebrow": "Nous contacter",
     "home.contact.title": "Parlons de votre projet",
     "home.contact.body":

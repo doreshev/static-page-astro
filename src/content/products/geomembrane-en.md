@@ -3,8 +3,8 @@ lang: "en"
 group: "geomembrane"
 title: "Geomembrane"
 shortDescription: "HDPE waterproofing liner for construction, agriculture, and industrial containment."
-image: "./images/geomembrane.svg"
-imageAlt: "PRODUCT PHOTO PLACEHOLDER — geomembrane"
+image: "./images/geomembrane.png"
+imageAlt: "HDPE waterproofing liner"
 order: 6
 featured: true
 specs:

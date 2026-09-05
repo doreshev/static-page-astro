@@ -3,8 +3,8 @@ lang: "en"
 group: "drainage-membrane"
 title: "Drainage Membrane"
 shortDescription: "Profiled HDPE waterproofing membrane for foundations, walls, and underground structures."
-image: "./images/drainage-membrane.svg"
-imageAlt: "PRODUCT PHOTO PLACEHOLDER — drainage membrane"
+image: "./images/drainage-membrane.png"
+imageAlt: "Profiled HDPE waterproofing membrane"
 order: 5
 featured: false
 specs:

@@ -3,8 +3,8 @@ lang: "en"
 group: "geogrids"
 title: "Geogrids"
 shortDescription: "Cellular confinement grid for road, slope, and ground reinforcement."
-image: "./images/geogrids.svg"
-imageAlt: "PRODUCT PHOTO PLACEHOLDER — geogrids"
+image: "./images/geogrids.png"
+imageAlt: "Cellular confinement grid"
 order: 8
 featured: false
 specs:

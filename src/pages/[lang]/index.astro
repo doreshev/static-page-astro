@@ -1,11 +1,12 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import { getCollection } from "astro:content";
 import { locales, type Locale } from "../../i18n/ui";
 import { useTranslations, localizedPath, withLangFallback } from "../../i18n/utils";
 import heroPhoto from "../../content/facility/images/pipe-tunnel.jpg";
+import posterPhoto from "../../content/facility/images/factory-nameplate.jpg";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -19,16 +20,9 @@ const featured = withLangFallback(allProducts, lang)
   .filter((p) => p.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
 
-// One representative facility photo for the lightweight gallery link
-// below -- not the same photo as the hero background, so the two photo
-// moments on this page stay visually distinct.
-const allPhotos = await getCollection("facility");
-const facilityPhoto = withLangFallback(allPhotos, lang).find(
-  (p) => p.data.group === "geogrid-slope"
-);
+const posterImage = await getImage({ src: posterPhoto, width: 1200 });
 
 const titleLines = t("home.title").split("\n");
-const aboutParagraphs = t("home.about.body").split("\n\n");
 ---
 
 <Layout lang={lang} title={t("home.title").replace(/\n/g, " ")} description={t("home.lead")}>
@@ -55,26 +49,26 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
 
   <section class="section section--bordered wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">02 —</span> {t("home.about.eyebrow")}</p>
-      <h2>{t("home.about.title")}</h2>
-      {aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <p class="eyebrow"><span class="eyebrow__index">02 —</span> {t("home.intro.eyebrow")}</p>
+      <h2>{t("home.intro.title")}</h2>
+      <p>{t("home.intro.body")}</p>
+    </div>
+
+    <!--
+      PLACEHOLDER VIDEO -- public/videos/facility-overview.mp4 is currently
+      an empty 0-byte file. Replace that file (same name) with the real
+      video and this block works with no code changes. No autoplay: a
+      real click-to-play control respects bandwidth and accessibility
+      better than an autoplaying background clip.
+    -->
+    <div class="video-block">
+      <video controls preload="none" poster={posterImage.src} width="1200" height="675">
+        <source src="/videos/facility-overview.mp4" type="video/mp4" />
+        {t("facility.video.fallback")}{" "}
+        <a href="/videos/facility-overview.mp4">facility-overview.mp4</a>
+      </video>
     </div>
   </section>
-
-  {facilityPhoto && (
-    <section class="facility-break wrap reveal">
-      <a class="facility-break__link" href={localizedPath(lang, "facility")}>
-        <Image
-          class="facility-break__image"
-          src={facilityPhoto.data.image}
-          alt={facilityPhoto.data.imageAlt}
-          width={640}
-          height={640}
-        />
-        <span class="facility-break__cta">{t("home.facility.cta")} →</span>
-      </a>
-    </section>
-  )}
 
   <section class="section section--bordered wrap reveal">
     <div class="section__head">
@@ -103,20 +97,9 @@ const aboutParagraphs = t("home.about.body").split("\n\n");
     </p>
   </section>
 
-  <section class="section section--bordered wrap reveal">
-    <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.certifications.eyebrow")}</p>
-      <h2>{t("home.certifications.title")}</h2>
-      <p class="lead">{t("home.certifications.body")}</p>
-    </div>
-    <a class="btn btn-secondary" href={localizedPath(lang, "certificates")}>
-      {t("home.certifications.cta")}
-    </a>
-  </section>
-
   <section class="section wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">05 —</span> {t("home.contact.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.contact.eyebrow")}</p>
       <h2>{t("home.contact.title")}</h2>
       <p class="lead">{t("home.contact.body")}</p>
     </div>

@@ -23,43 +23,45 @@ below before launch.
 
 ## Design direction
 
-The site uses a dark, cinematic "engineered route" visual system: a
-near-black canvas, oversized bold display type, and one vivid blue accent,
-leaning on real facility photography rather than invented graphics for
-its visual interest. A few notes if you're picking this back up:
+The site uses a light, document-forward "engineered route" visual system —
+better suited to the dense technical content it actually carries (specs,
+certificates, catalogues) than the dark cinematic version it started as.
+One deliberate exception: the homepage hero band stays dark, with the
+facility photo as its background — a strong opening moment, then
+comfortable light-theme reading for everything after. A few notes if
+you're picking this back up:
 
 - **Design tokens** live at the top of `src/styles/global.css` (`--void`,
   `--panel`, `--paper`, `--mist`, `--route`, etc.) — change the palette
   there and it propagates everywhere, since every page reuses the same
-  component classes (`.card`, `.btn`, `.hero`, `.notice`, etc.). This is a
-  single dark theme by design — there's no light-mode toggle.
-- **Real photography carries the visual weight, deliberately used
-  sparingly.** There are exactly two photo "moments" on the homepage: the
-  hero background (`src/content/facility/images/pipe-tunnel.jpg`, dimmed
-  with a gradient overlay so the headline stays legible) and one small,
-  restrained "facility break" — a single square photo with a "View the
-  gallery" link, no heading or paragraph — between "who we are" and the
-  product range. An earlier version of the hero also had an invented
-  abstract compass/dial graphic; it was removed in favor of letting the
-  real photography do that work instead, and to keep the hero from feeling
-  busy. Resist the urge to add more background-photo moments beyond these
-  two — restraint is what keeps the homepage from feeling cluttered; the
-  full photo set already lives on the `/facility/` gallery page for anyone
-  who wants to see more.
+  component classes (`.card`, `.btn`, `.hero`, `.notice`, etc.).
+- **The hero is a scoped exception, not a second theme.** The `.hero` CSS
+  rule locally re-declares the same variable names (`--paper`, `--mist`,
+  `--route`, etc.) back to their old dark-theme values, so every
+  descendant element (`h1`, `p`, `.eyebrow`, `.btn`...) renders correctly
+  as light-on-dark inside the hero without any component needing
+  hero-specific styling. `--void` is deliberately left at its light value
+  even inside the hero, so `.btn`'s hover state (which swaps to
+  `var(--void)`) gives a clean light "ghost button" against the photo.
+- **The homepage is intentionally short**: Hero → brief intro + video →
+  Featured products → Contact. Facility and Certificates are deliberately
+  *not* homepage sections — they're one-click away via nav, but don't get
+  a dedicated homepage narrative beat. If that ever changes, match the
+  existing numbered-eyebrow pattern (see below) rather than inventing a
+  new heading style.
 - **Scroll animation** is handled by `src/components/ScrollFX.astro`
   (included once, globally, via `Layout.astro`), using GSAP + ScrollTrigger
   for a fade/slide-up reveal on any element marked `.reveal`. Skipped
   entirely for `prefers-reduced-motion` — content just appears
   immediately, no motion.
 - **Numbered section labels** (01, 02, 03...) only appear on the homepage,
-  where they narrate a real sequence (origin → who we are → product range
-  → certification → contact). The facility break is intentionally
-  *not* numbered — it's a visual pause, not a narrative beat. Other pages
-  use a plain, unnumbered eyebrow label — don't add numbering there, it
-  wouldn't correspond to an actual sequence.
+  where they narrate a real sequence (origin → who we are/video → product
+  range → contact). Other pages use a plain, unnumbered eyebrow label —
+  don't add numbering there, it wouldn't correspond to an actual sequence.
 - This was built without a way to render a live screenshot in the build
-  environment, so it's been checked carefully in code (contrast, dark
-  variants of every hardcoded color) and spot-checked with a local
+  environment, so it's been checked carefully in code (contrast, light/
+  dark variants of every hardcoded color) and spot-checked with a local
+
   WeasyPrint render (a CSS-to-PDF renderer, not a real browser — good
   enough to catch gross errors, not a substitute for the real thing). Run
   `npm run dev` and look it over before treating it as final, especially

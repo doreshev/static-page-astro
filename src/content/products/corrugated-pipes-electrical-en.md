@@ -3,8 +3,8 @@ lang: "en"
 group: "corrugated-pipes-electrical"
 title: "Corrugated Pipes for Electrical Systems"
 shortDescription: "Double-walled conduit for protecting electrical and communication cables."
-image: "./images/corrugated-pipes-electrical.svg"
-imageAlt: "PRODUCT PHOTO PLACEHOLDER — corrugated pipes for electrical systems"
+image: "./images/corrugated-pipes-electrical.png"
+imageAlt: "Corrugated Pipes for Electrical Systems"
 order: 2
 featured: false
 specs:

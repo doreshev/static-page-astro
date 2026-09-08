@@ -13,6 +13,7 @@ const currentPath = Astro.url.pathname;
 // "Home" is reached via the logo, matching how the nav reads elsewhere on
 // the site -- these are the sections a visitor moves between.
 const links = [
+  { href: localizedPath(lang, "about"), key: "nav.about" as const },
   { href: localizedPath(lang, "products"), key: "nav.products" as const },
   { href: localizedPath(lang, "facility"), key: "nav.facility" as const },
   { href: localizedPath(lang, "certificates"), key: "nav.certificates" as const },

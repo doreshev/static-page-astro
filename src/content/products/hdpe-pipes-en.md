@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "hdpe-pipes"
+category: "pipes"
 title: "HDPE Pipes"
 shortDescription: "High-density polyethylene pipes for water supply, sewage, drainage, and agricultural systems."
 image: "./images/hdpe-pipes.png"

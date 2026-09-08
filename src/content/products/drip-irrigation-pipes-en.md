@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "drip-irrigation-pipes"
+category: "pipes"
 title: "Drip Irrigation Pipes"
 shortDescription: "Drip line for economical, direct-to-root water delivery in agriculture."
 image: "./images/drip-irrigation-pipes.png"

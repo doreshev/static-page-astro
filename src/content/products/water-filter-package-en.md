@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "water-filter-package"
+category: "other"
 title: "Water Filter Package"
 shortDescription: "Structured HDPE packing for liquid distribution and heat exchange systems."
 image: "./images/water-filter-package.png"

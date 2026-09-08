@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "geogrids"
+category: "membranes-geosynthetics"
 title: "Geogrids"
 shortDescription: "Cellular confinement grid for road, slope, and ground reinforcement."
 image: "./images/geogrids.png"

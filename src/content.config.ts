@@ -13,6 +13,12 @@ const products = defineCollection({
     z.object({
       lang: z.enum(["en", "de", "fr"]),
       group: z.string(), // shared id across the 3 language versions of one product
+      // Provisional first-pass grouping (pipes / membranes-geosynthetics /
+      // other) so the products page can show sections now. Expect this to
+      // change once the real category breakdown (pipes, other plastics,
+      // raw material, etc.) is provided -- it's just a string, so adding
+      // or renaming categories later is a one-line edit per product.
+      category: z.string(),
       title: z.string(),
       shortDescription: z.string(),
       image: image(),
@@ -28,6 +34,8 @@ const products = defineCollection({
 // Certificates are intentionally minimal -- just the scan and a name. No
 // issuer, expiry, or description fields: keeping the data model this thin
 // is a deliberate choice (see PRODUCT_GUIDE.md / README for why).
+// Picture-card style: photo, issuing body, and a one-line scope. No
+// download buttons, no expiry dates shown -- click the photo to zoom.
 const certificates = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/certificates" }),
   schema: ({ image }) =>
@@ -35,6 +43,8 @@ const certificates = defineCollection({
       lang: z.enum(["en", "de", "fr"]),
       group: z.string(),
       title: z.string(),
+      issuer: z.string(),
+      scope: z.string(),
       image: image(),
       imageAlt: z.string(),
       order: z.number().default(0),

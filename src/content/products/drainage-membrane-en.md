@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "drainage-membrane"
+category: "membranes-geosynthetics"
 title: "Drainage Membrane"
 shortDescription: "Profiled HDPE waterproofing membrane for foundations, walls, and underground structures."
 image: "./images/drainage-membrane.png"

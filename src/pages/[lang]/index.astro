@@ -5,7 +5,14 @@ import ProductCard from "../../components/ProductCard.astro";
 import { getCollection } from "astro:content";
 import { locales, type Locale } from "../../i18n/ui";
 import { useTranslations, localizedPath, withLangFallback } from "../../i18n/utils";
-import heroPhoto from "../../content/facility/images/pipe-tunnel.jpg";
+// PLACEHOLDER -- none of our real facility photos are naturally light
+// enough for this treatment (all fairly dark/earthy industrial shots),
+// and forcing one through heavy filters just looked muddy rather than
+// light. This is a generated soft abstract placeholder standing in for
+// a real light-toned photo (e.g. pale plastic products/sheets on a light
+// table, a bright clean facility interior) -- swap it for the real thing
+// whenever one's available, same import line, no other changes needed.
+import heroPhoto from "../../content/facility/images/hero-placeholder.jpg";
 import posterPhoto from "../../content/facility/images/factory-nameplate.jpg";
 
 export function getStaticPaths() {
@@ -49,9 +56,9 @@ const titleLines = t("home.title").split("\n");
 
   <section class="section section--bordered wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">02 —</span> {t("home.intro.eyebrow")}</p>
-      <h2>{t("home.intro.title")}</h2>
-      <p>{t("home.intro.body")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">02 —</span> {t("home.video.eyebrow")}</p>
+      <h2>{t("home.video.title")}</h2>
+      <p class="lead">{t("home.video.body")}</p>
     </div>
 
     <!--
@@ -97,9 +104,20 @@ const titleLines = t("home.title").split("\n");
     </p>
   </section>
 
+  <section class="section section--bordered wrap reveal">
+    <div class="section__head">
+      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.certifications.eyebrow")}</p>
+      <h2>{t("home.certifications.title")}</h2>
+      <p class="lead">{t("home.certifications.body")}</p>
+    </div>
+    <a class="btn btn-secondary" href={localizedPath(lang, "certificates")}>
+      {t("home.certifications.cta")}
+    </a>
+  </section>
+
   <section class="section wrap reveal">
     <div class="section__head">
-      <p class="eyebrow"><span class="eyebrow__index">04 —</span> {t("home.contact.eyebrow")}</p>
+      <p class="eyebrow"><span class="eyebrow__index">05 —</span> {t("home.contact.eyebrow")}</p>
       <h2>{t("home.contact.title")}</h2>
       <p class="lead">{t("home.contact.body")}</p>
     </div>

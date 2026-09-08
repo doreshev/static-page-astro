@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "rubber-slabs-curbs"
+category: "other"
 title: "Rubber Slabs and Curbs"
 shortDescription: "Durable rubber paving tiles and curbstones for walkways, playgrounds, and public areas."
 image: "./images/rubber-slabs-curbs.png"

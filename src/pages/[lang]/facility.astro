@@ -50,31 +50,30 @@ const fullImages = await Promise.all(
       </video>
     </div>
 
-    <div class="grid">
+    <div class="gallery-grid">
       {
         photos.map((photo, i) => {
           const dialogId = `facility-dialog-${photo.data.group}`;
           return (
-            <div class="card cert-card">
+            <div>
               <button
                 type="button"
-                class="cert-trigger"
+                class="gallery-trigger"
                 data-lightbox-target={dialogId}
                 aria-haspopup="dialog"
                 aria-label={`${t("certificates.viewLarger")}: ${photo.data.caption}`}
               >
                 <Image
-                  class="card__image"
                   src={photo.data.image}
                   alt={photo.data.imageAlt}
                   width={400}
                   height={300}
                 />
               </button>
-              <p class="card__desc">{photo.data.caption}</p>
-              {photo.data.lang !== lang && (
-                <span class="card__meta">{photo.data.lang.toUpperCase()}</span>
-              )}
+              <p class="gallery-caption">
+                {photo.data.caption}
+                {photo.data.lang !== lang && ` · ${photo.data.lang.toUpperCase()}`}
+              </p>
 
               <dialog id={dialogId} class="lightbox">
                 <button

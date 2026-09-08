@@ -59,6 +59,8 @@ const fullImages = await Promise.all(
                 />
               </button>
               <p class="card__title">{cert.data.title}</p>
+              <p class="card__issuer">{cert.data.issuer}</p>
+              <p class="card__desc">{cert.data.scope}</p>
               {cert.data.lang !== lang && (
                 <span class="card__meta">{cert.data.lang.toUpperCase()}</span>
               )}

@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "geomembrane"
+category: "membranes-geosynthetics"
 title: "Geomembrane"
 shortDescription: "HDPE waterproofing liner for construction, agriculture, and industrial containment."
 image: "./images/geomembrane.png"

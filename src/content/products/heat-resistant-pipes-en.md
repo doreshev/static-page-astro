@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "heat-resistant-pipes"
+category: "pipes"
 title: "Heat-Resistant Polyethylene Pipes"
 shortDescription: "PE-RT / special HDPE pipe for hot water and heating systems."
 image: "./images/heat-resistant-pipes.png"

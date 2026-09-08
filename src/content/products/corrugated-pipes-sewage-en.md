@@ -1,6 +1,7 @@
 ---
 lang: "en"
 group: "corrugated-pipes-sewage"
+category: "pipes"
 title: "Corrugated Pipes for Sewage Systems"
 shortDescription: "Double-walled HDPE pipe for underground sewage and stormwater drainage."
 image: "./images/corrugated-pipes-sewage.png"

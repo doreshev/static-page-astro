@@ -1,0 +1,66 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import { locales, type Locale } from "../../i18n/ui";
+import { useTranslations } from "../../i18n/utils";
+import photo1 from "../../content/facility/images/factory-nameplate.jpg";
+import photo2 from "../../content/facility/images/pipe-tunnel.jpg";
+import photo3 from "../../content/facility/images/geogrid-slope.jpg";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+const bodyParagraphs = t("about.body").split("\n\n");
+
+const manufacturerPhotos = [
+  { image: photo1, caption: t("about.photo1.caption") },
+  { image: photo2, caption: t("about.photo2.caption") },
+  { image: photo3, caption: t("about.photo3.caption") },
+];
+---
+
+<Layout lang={lang} title={t("about.title")} description={t("about.body").split("\n\n")[0]}>
+  <section class="section section--bordered wrap reveal">
+    <div class="section__head">
+      <p class="eyebrow">{t("about.eyebrow")}</p>
+      <h1>{t("about.title")}</h1>
+      {bodyParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </section>
+
+  <!--
+    "Our manufacturing partner" -- real Galkynysh Plastik facility photos
+    (the same ones used on /facility/), reused here with fresh captions
+    for this specific context. Not wired to the lightbox: kept simple as
+    a supporting visual for the About narrative, not another gallery to
+    browse (that's what /facility/ is for).
+  -->
+  <section class="section wrap reveal">
+    <div class="section__head">
+      <p class="eyebrow">{t("about.manufacturer.eyebrow")}</p>
+      <h2>{t("about.manufacturer.title")}</h2>
+      <p class="lead">{t("about.manufacturer.lead")}</p>
+    </div>
+    <div class="grid">
+      {
+        manufacturerPhotos.map((photo) => (
+          <div>
+            <Image
+              class="card__image"
+              style="border:1px solid var(--line);"
+              src={photo.image}
+              alt={photo.caption}
+              width={400}
+              height={300}
+            />
+            <p class="gallery-caption">{photo.caption}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

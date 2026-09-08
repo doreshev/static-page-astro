@@ -2,7 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import ProductCard from "../../../components/ProductCard.astro";
 import { getCollection } from "astro:content";
-import { locales, type Locale } from "../../../i18n/ui";
+import { locales, type Locale, type UiKey } from "../../../i18n/ui";
 import { useTranslations, withLangFallback } from "../../../i18n/utils";
 
 export function getStaticPaths() {
@@ -16,6 +16,15 @@ const allProducts = await getCollection("products");
 const products = withLangFallback(allProducts, lang).sort(
   (a, b) => a.data.order - b.data.order
 );
+
+// Provisional category order -- see the note in content.config.ts. Any
+// category not listed here still renders, just after these three, so
+// adding a new category to a product never silently drops it.
+const categoryOrder = ["pipes", "membranes-geosynthetics", "other"];
+const categories = [
+  ...categoryOrder,
+  ...new Set(products.map((p) => p.data.category).filter((c) => !categoryOrder.includes(c))),
+];
 ---
 
 <Layout lang={lang} title={t("products.title")} description={t("products.lead")}>
@@ -25,20 +34,31 @@ const products = withLangFallback(allProducts, lang).sort(
       <h1>{t("products.title")}</h1>
       <p class="lead">{t("products.lead")}</p>
     </div>
-    <div class="grid">
-      {
-        products.map((product) => (
-          <ProductCard
-            lang={lang}
-            group={product.data.group}
-            title={product.data.title}
-            shortDescription={product.data.shortDescription}
-            image={product.data.image}
-            imageAlt={product.data.imageAlt}
-            sourceLang={product.data.lang}
-          />
-        ))
-      }
-    </div>
+
+    {
+      categories.map((category) => {
+        const items = products.filter((p) => p.data.category === category);
+        if (items.length === 0) return null;
+        const labelKey = `category.${category}` as UiKey;
+        return (
+          <div class="product-category">
+            <h2 class="product-category__title">{t(labelKey)}</h2>
+            <div class="grid">
+              {items.map((product) => (
+                <ProductCard
+                  lang={lang}
+                  group={product.data.group}
+                  title={product.data.title}
+                  shortDescription={product.data.shortDescription}
+                  image={product.data.image}
+                  imageAlt={product.data.imageAlt}
+                  sourceLang={product.data.lang}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })
+    }
   </section>
 </Layout>

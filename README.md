@@ -1,40 +1,125 @@
 # Ronesans Trading — website
 
 A trilingual (EN/DE/FR) static company site built with Astro: home page,
-product catalogue, a facility/operations gallery with video, certificates,
-a downloadable PDF catalogue, and a contact form.
+a categorized product catalogue, a facility/operations gallery with
+video, certificates, a downloadable PDF catalogue, and a contact form.
 
-**Naming:** the site markets products manufactured by **Galkynysh
-Plastik**, but the legal entity operating this website is **Ronesans
-Trading Lux** (short/brand name: **Ronesans Trading**), registered in
-Luxembourg, acting as Galkynysh Plastik's official representative in the
-EU. The two names are kept intentionally distinct throughout the site —
-the brand/header uses the short name "Ronesans Trading", product copy
-credits Galkynysh Plastik as manufacturer, and `/imprint/` uses the full
-legal name "Ronesans Trading Lux" with a note on which one belongs in the
-legal-notice section (the representative's registration details, not the
-manufacturer's).
+**Naming:** the site currently markets products manufactured by
+**Galkynysh Plastik**, with the legal entity operating this website being
+**Ronesans Trading Lux** (short/brand name: **Ronesans Trading**),
+registered in Luxembourg, acting as Galkynysh Plastik's official
+representative in the EU. Note for whoever picks this up next: Ronesans
+Trading is expected to represent more than one manufacturer over time, so
+the current "we are Galkynysh's EU representative" framing on the
+homepage/imprint may need broadening later — Galkynysh Plastik stays
+mentioned regardless, just possibly not as the sole positioning. The two
+names are kept intentionally distinct throughout the site — the
+brand/header uses "Ronesans Trading", product copy credits Galkynysh
+Plastik as manufacturer, and `/imprint/` uses the full legal name
+"Ronesans Trading Lux" with a note on which one belongs in the
+legal-notice section.
 
 The 10 products already have real copy from the manufacturer's catalogue
-— **see `PRODUCT_GUIDE.md`** for exactly what's left to do (mainly: swap
-in real photos). Certificates, facility photos, and the video are also
-using placeholder or manufacturer-supplied assets — check each section
-below before launch.
+and are grouped into provisional categories (Pipes / Membranes &
+Geosynthetics / Other) — **see `PRODUCT_GUIDE.md`** for what's left to do
+(mainly: swap in real photos; the `.png` placeholders currently in
+`src/content/products/images/` need replacing with actual product
+photography — they were regenerated as placeholders since the real
+photos referenced in an edited copy of these files weren't included in
+that handoff). Certificates and facility photos are real; the video is
+still a placeholder. Check each section below before launch.
 
 ## Design direction
 
-The site uses a light, document-forward "engineered route" visual system —
-better suited to the dense technical content it actually carries (specs,
-certificates, catalogues) than the dark cinematic version it started as.
-One deliberate exception: the homepage hero band stays dark, with the
-facility photo as its background — a strong opening moment, then
-comfortable light-theme reading for everything after. A few notes if
-you're picking this back up:
+The site uses a light, document-forward visual system suited to the
+dense technical content it carries (specs, certificates, catalogues),
+with a muted navy-teal accent (not a vivid saturated blue) for a more
+sophisticated, established-supplier feel. Styled to align with
+https://ronesans-global-connect.lovable.app/ where practical (rounded
+buttons/pills, plain sans-serif nav and button text instead of the
+monospace/uppercase treatment used elsewhere on the site, the muted navy
+accent) while keeping our own real content — that reference site uses
+placeholder company/product names throughout. A few notes if you're
+picking this back up:
 
 - **Design tokens** live at the top of `src/styles/global.css` (`--void`,
   `--panel`, `--paper`, `--mist`, `--route`, etc.) — change the palette
   there and it propagates everywhere, since every page reuses the same
   component classes (`.card`, `.btn`, `.hero`, `.notice`, etc.).
+- **Rounded corners** (`--radius`, currently `10px`) are used on buttons,
+  the nav CTA, and the language-switcher pill, matching the reference.
+  Product cards keep their sharper "spec sheet" corner marks
+  deliberately — that's a distinct signature, not an oversight.
+- **Nav links and button labels use plain sans-serif, sentence case**
+  (`.nav-links a`, `.nav-cta`, `.btn`) — matching the reference rather
+  than the monospace/uppercase treatment still used for eyebrows,
+  certificate issuer lines, and spec-table labels elsewhere. That
+  monospace usage is a deliberate "technical datasheet" accent for
+  small structural labels, kept intentionally distinct from primary
+  navigation/actions.
+- **The homepage hero background is currently a generated placeholder**
+  (`src/content/facility/images/hero-placeholder.jpg`), not a real photo.
+  None of the real facility photos on hand are naturally light enough for
+  this treatment — they're all fairly dark/earthy industrial shots, and
+  pushing one through heavy filters to compensate just looked muddy
+  rather than light. The placeholder is a soft, pale, pre-blurred
+  abstract image standing in for something like pale plastic
+  products/sheets on a light table, or a bright clean facility interior.
+  Swap in a real photo by changing the one import line in
+  `src/pages/[lang]/index.astro` — but if it's a normal (sharper, less
+  pale) photo, also restore stronger filtering on `.hero__bg img` in
+  global.css (currently tuned very light for the placeholder — see the
+  comment right above that rule for the old, stronger values). Either
+  way, it's washed with a light overlay so it reads as ambient texture
+  behind dark-on-light text, using the same global tokens as the rest of
+  the page — no scoped dark-mode override needed, and nothing dark for
+  the sticky header to visually pick up (which is what caused an earlier
+  bug, see below).
+- **The header is fully opaque** (`background: var(--void)`, no
+  transparency or backdrop-filter). It used to be a translucent
+  `rgba(...)` background with `backdrop-filter: blur()`, which let
+  whatever was scrolled underneath — originally a dark hero photo — bleed
+  through and make the header itself look dark. If a future redesign
+  wants a translucent/blurred header again, test it specifically against
+  whatever sits directly behind it at page load, in a real browser
+  (WeasyPrint, used for local checks here, doesn't support
+  `backdrop-filter` and won't catch this).
+- **Scroll animation** is handled by `src/components/ScrollFX.astro`
+  (included once, globally, via `Layout.astro`), using GSAP + ScrollTrigger
+  for a fade/slide-up reveal on any element marked `.reveal`. Skipped
+  entirely for `prefers-reduced-motion` — content just appears
+  immediately, no motion.
+- **Numbered section labels** (01, 02, 03...) only appear on the homepage,
+  where they narrate a real sequence (origin → who we are/video → product
+  range → contact). Other pages use a plain, unnumbered eyebrow label —
+  don't add numbering there, it wouldn't correspond to an actual sequence.
+- **Certificates and facility photos use a frameless gallery style**
+  (`.gallery-grid` / `.gallery-trigger` / `.gallery-caption` in
+  global.css) — just the photo and a short caption, click to zoom. This
+  is deliberately distinct from `.card` (used for products), which keeps
+  a bordered look since products carry more supporting text alongside the
+  image.
+- This was built without a way to render a live screenshot in the build
+  environment, so it's been checked carefully in code and spot-checked
+  with a local WeasyPrint render (a CSS-to-PDF renderer, not a real
+  browser — it doesn't support `backdrop-filter`, CSS `filter: blur()`,
+  or `aspect-ratio` reliably, so those specific effects need a real
+  browser check). Run `npm run dev` and look it over before treating this
+  as final, especially on mobile widths.
+
+## Product categories
+
+`src/content.config.ts` adds a `category` string field to each product.
+Current first-pass grouping (provisional, expect a refined breakdown
+later): `pipes`, `membranes-geosynthetics`, `other`. The products page
+(`src/pages/[lang]/products/index.astro`) groups by this field and renders
+one heading + grid per category, in the order defined by `categoryOrder`
+in that file — any category not in that list still renders, just after
+the three listed, so a new category never silently disappears. Category
+display labels are the `category.*` keys in `src/i18n/ui.ts`. To add a
+new category: add the label keys (all 3 languages), set `category: "..."`
+on the relevant products, and optionally add it to `categoryOrder` to
+control where it sorts.
 - **The hero is a scoped exception, not a second theme.** The `.hero` CSS
   rule locally re-declares the same variable names (`--paper`, `--mist`,
   `--route`, etc.) back to their old dark-theme values, so every
@@ -80,23 +165,34 @@ npm run preview   # serve the built dist/ locally
 
 - `src/content/products/` — **see `PRODUCT_GUIDE.md`** for the full
   breakdown. One Markdown file per product (currently English-only, e.g.
-  `hdpe-pipes-en.md`), tied to translations by a shared `group` id.
-  Content is real (from the manufacturer's catalogue); photos are
-  placeholders pending real product photography.
-- `src/content/certificates/` — 3 English-only entries, deliberately
-  minimal per request: just a photo and a name, no issuer/expiry/
-  description fields. Images are colocated at
+  `hdpe-pipes-en.md`), tied to translations by a shared `group` id, and
+  grouped into a `category` (see "Product categories" above). Content is
+  real (from the manufacturer's catalogue); photos are `.png` placeholders
+  pending real product photography — see the note on that in the intro
+  above.
+- `src/content/certificates/` — 4 English-only entries, shown as picture
+  cards: photo, issuing body, and a one-line scope — no expiry dates, no
+  download buttons, click the photo to zoom. Images are colocated at
   `src/content/certificates/images/`. To add a translation, add e.g.
   `cert-1-de.md` with `lang: "de"` and the same `group: "cert-1"` — every
   page falls back to English automatically until a translation exists (see
   "How the language-fallback system works" below).
+- `src/pages/[lang]/about.astro` — the About page: the fuller company
+  narrative (moved here from the homepage) plus an "Our manufacturing
+  partner" section with 2-3 facility photos and captions. Reuses the same
+  photo files as `/facility/`, just with different captions for this
+  context — not wired to the lightbox here, kept as a simpler supporting
+  visual rather than another browsable gallery.
 - `src/content/facility/` — real photos of the manufacturing facility and
-  site work, used for the homepage hero background, the homepage's
-  "Where it's made" teaser section, and the `/facility/` gallery page.
-  Currently 4 photos; add more by dropping a new photo into
-  `src/content/facility/images/` and a matching `<group>-en.md` file
-  (copy an existing one as a template) — no code changes needed, the
-  gallery grid picks up any number of entries automatically.
+  site work, used for the homepage hero background
+  (currently a generated light placeholder — see the note in the intro
+  above and the code comment in `src/pages/[lang]/index.astro`) and the
+  `/facility/` gallery page (dropped from the homepage as its own
+  section per request — it's nav-only now). Currently 4 photos; add more
+  by dropping a new photo into `src/content/facility/images/` and a
+  matching `<group>-en.md` file (copy an existing one as a template) — no
+  code changes needed, the gallery grid picks up any number of entries
+  automatically.
 - `public/videos/facility-overview.mp4` — **currently an empty 0-byte
   placeholder file.** Replace it with the real video, same filename, and
   the `/facility/` page's video player works with no code changes. Keep
